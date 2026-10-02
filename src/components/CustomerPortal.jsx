@@ -174,8 +174,7 @@ const MemberCardModal = ({ member, onClose }) => {
 export const CustomerPortal = () => {
   const {
     members, reservations, createReservation, triggerLateArrival,
-    inventory, checkoutMarketplace, showToast,
-    addProduct, updateProduct, deleteProduct
+    inventory, checkoutMarketplace, showToast
   } = useCarWash();
 
   const [tab, setTab]         = useState('reservasi');
@@ -188,13 +187,6 @@ export const CustomerPortal = () => {
   const [ticket, setTicket]   = useState(null);
   const [cart, setCart]       = useState([]);
   const [cardModal, setCardModal] = useState(false);
-
-  // Store CRUD State
-  const [storeModal, setStoreModal] = useState(false);
-  const [editingItem, setEditingItem] = useState(null);
-  const [storeForm, setStoreForm] = useState({
-    name: '', category: 'autocare', price: '', stock: '', unit: 'Botol'
-  });
 
   const member    = members[0];
   const myRes     = reservations.filter(r => r.phone === member.phone);
@@ -218,6 +210,8 @@ export const CustomerPortal = () => {
   };
 
   const products  = inventory.filter(i => i.category !== 'operasional');
+
+  // Customer Cart Handlers: Add, Increase, Decrease, Remove
   const addToCart = (p) => {
     setCart(c => {
       const ex = c.find(x => x.id === p.id);
@@ -225,39 +219,23 @@ export const CustomerPortal = () => {
     });
     showToast(`${p.name} ditambahkan ke keranjang`, 'info');
   };
+
+  const updateCartQty = (id, delta) => {
+    setCart(c => c.map(x => {
+      if (x.id === id) {
+        const newQty = x.qty + delta;
+        return newQty > 0 ? { ...x, qty: newQty } : null;
+      }
+      return x;
+    }).filter(Boolean));
+  };
+
+  const removeFromCart = (id) => {
+    setCart(c => c.filter(x => x.id !== id));
+    showToast('Barang dihapus dari keranjang', 'warning');
+  };
+
   const cartTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
-
-  // Store CRUD Handlers
-  const handleOpenStoreModal = (item = null) => {
-    if (item) {
-      setEditingItem(item);
-      setStoreForm({ name: item.name, category: item.category, price: item.price, stock: item.stock, unit: item.unit });
-    } else {
-      setEditingItem(null);
-      setStoreForm({ name: '', category: 'autocare', price: '', stock: '', unit: 'Pcs' });
-    }
-    setStoreModal(true);
-  };
-
-  const handleSaveStoreProduct = (e) => {
-    e.preventDefault();
-    if (!storeForm.name || !storeForm.price) {
-      showToast('Nama dan harga produk wajib diisi', 'error');
-      return;
-    }
-    if (editingItem) {
-      updateProduct(editingItem.id, storeForm);
-    } else {
-      addProduct(storeForm);
-    }
-    setStoreModal(false);
-  };
-
-  const handleDeleteStoreProduct = (id) => {
-    if (window.confirm('Hapus produk ini dari Store?')) {
-      deleteProduct(id);
-    }
-  };
 
   // Tabs navigation - Dokumentasi ONLY appears if user has booked Premium Clean!
   const TABS = [
@@ -522,67 +500,101 @@ export const CustomerPortal = () => {
         </div>
       )}
 
-      {/* ═══ STORE & MERCHANDISE (WITH CRUD) ════════════════════════════ */}
+      {/* ═══ STORE & MERCHANDISE (CUSTOMER SHOPPING & CART) ════════════════ */}
       {tab === 'store' && (
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 320px', gap:24 }}>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 340px', gap:24 }}>
           <div>
-            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
-              <div>
-                <h3 style={{ fontSize:18, fontWeight:800 }}>Store Autocare &amp; Merchandise</h3>
-                <p style={{ fontSize:12, color:'#5C5C70' }}>Produk perawatan mobil premium &amp; apparel resmi AURA</p>
-              </div>
-              <button className="btn btn-gold" style={{ fontSize:12 }} onClick={() => handleOpenStoreModal()}>
-                ⚙️ + Tambah Produk Store (CRUD)
-              </button>
+            <div style={{ marginBottom:16 }}>
+              <h3 style={{ fontSize:18, fontWeight:800 }}>Store Autocare &amp; Merchandise</h3>
+              <p style={{ fontSize:12, color:'#5C5C70' }}>Produk perawatan mobil premium &amp; apparel resmi AURA</p>
             </div>
 
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px, 1fr))', gap:14 }}>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(210px, 1fr))', gap:14 }}>
               {products.map(p => (
-                <div key={p.id} className="card" style={{ padding:16, display:'flex', flexDirection:'column', justifyContent:'space-between', position:'relative' }}>
+                <div key={p.id} className="card" style={{ padding:16, display:'flex', flexDirection:'column', justifyContent:'space-between' }}>
                   <div>
-                    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:8 }}>
-                      <span className="badge badge-gold" style={{ fontSize:10 }}>{p.category}</span>
-                      <div style={{ display:'flex', gap:4 }}>
-                        <button style={{ background:'transparent', border:'none', cursor:'pointer', fontSize:13 }} title="Edit Produk" onClick={() => handleOpenStoreModal(p)}>✏️</button>
-                        <button style={{ background:'transparent', border:'none', cursor:'pointer', fontSize:13 }} title="Hapus Produk" onClick={() => handleDeleteStoreProduct(p.id)}>🗑️</button>
-                      </div>
-                    </div>
+                    <span className="badge badge-gold" style={{ fontSize:10, marginBottom:8, display:'inline-block' }}>{p.category}</span>
                     <div style={{ fontSize:14, fontWeight:700, marginBottom:4, lineHeight:1.3 }}>{p.name}</div>
                     <div style={{ fontFamily:'monospace', fontSize:11, color:'#5C5C70', marginBottom:10 }}>SKU: {p.sku}</div>
                   </div>
                   <div>
                     <div style={{ fontSize:18, fontWeight:900, color:'#F2A900', letterSpacing:'-.02em', marginBottom:4 }}>{G(p.price)}</div>
                     <div style={{ fontSize:11, color:'#5C5C70', marginBottom:14 }}>Stok: <strong style={{ color:'#A0A0B0' }}>{p.stock} {p.unit}</strong></div>
-                    <button className="btn btn-ghost" style={{ width:'100%', justifyContent:'center', fontSize:12 }} onClick={() => addToCart(p)}>+ Keranjang</button>
+                    <button className="btn btn-gold" style={{ width:'100%', justifyContent:'center', fontSize:12.5 }} onClick={() => addToCart(p)}>
+                      + Tambah ke Keranjang
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Cart Panel */}
+          {/* Customer Cart Panel (Manage Items in Cart: Add, Decrease, Remove) */}
           <div className="card" style={{ padding:20, height:'fit-content' }}>
-            <div style={{ fontWeight:700, fontSize:14, marginBottom:16, paddingBottom:14, borderBottom:'1px solid #28282F', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-              <span>🛒 Keranjang Belanja</span><span className="badge badge-gold">{cart.length}</span>
+            <div style={{ fontWeight:800, fontSize:15, marginBottom:16, paddingBottom:14, borderBottom:'1px solid #28282F', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+              <span>🛒 Keranjang Saya</span>
+              {cart.length > 0 && (
+                <span className="badge badge-gold">{cart.reduce((s,i)=>s+i.qty, 0)} Item</span>
+              )}
             </div>
+
             {cart.length > 0 ? (
               <>
-                <div className="scroll-list" style={{ maxHeight:260, display:'flex', flexDirection:'column', gap:8, marginBottom:16 }}>
+                <div className="scroll-list" style={{ maxHeight:320, display:'flex', flexDirection:'column', gap:10, marginBottom:16 }}>
                   {cart.map(c => (
-                    <div key={c.id} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 12px', background:'#0D0D0F', borderRadius:8, border:'1px solid #28282F' }}>
-                      <div><div style={{ fontSize:12, fontWeight:700 }}>{c.name}</div><div style={{ fontSize:11, color:'#5C5C70' }}>{c.qty}x · {G(c.price)}</div></div>
-                      <span style={{ fontSize:12, fontWeight:700, color:'#F2A900' }}>{G(c.price * c.qty)}</span>
+                    <div key={c.id} style={{ display:'flex', alignItems:'center', gap:10, padding:'12px', background:'#0D0D0F', borderRadius:10, border:'1px solid #28282F' }}>
+                      <div style={{ flex:1 }}>
+                        <div style={{ fontSize:12.5, fontWeight:700, color:'#fff', marginBottom:2 }}>{c.name}</div>
+                        <div style={{ fontSize:11, color:'#F2A900', fontWeight:800 }}>{G(c.price * c.qty)}</div>
+                      </div>
+
+                      {/* Qty controls: Decrease (-), Quantity, Increase (+) */}
+                      <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+                        <button
+                          onClick={() => updateCartQty(c.id, -1)}
+                          style={{ width:24, height:24, borderRadius:6, background:'#28282F', border:'none', cursor:'pointer', color:'#fff', fontWeight:700, fontSize:14, display:'flex', alignItems:'center', justifyContent:'center' }}
+                          title="Kurangi Jumlah"
+                        >−</button>
+                        <span style={{ fontSize:13, fontWeight:800, minWidth:20, textAlign:'center' }}>{c.qty}</span>
+                        <button
+                          onClick={() => updateCartQty(c.id, 1)}
+                          style={{ width:24, height:24, borderRadius:6, background:'#28282F', border:'none', cursor:'pointer', color:'#fff', fontWeight:700, fontSize:14, display:'flex', alignItems:'center', justifyContent:'center' }}
+                          title="Tambah Jumlah"
+                        >+</button>
+                      </div>
+
+                      {/* Remove item button */}
+                      <button
+                        onClick={() => removeFromCart(c.id)}
+                        style={{ background:'transparent', border:'none', cursor:'pointer', fontSize:14, padding:4 }}
+                        title="Hapus Barang"
+                      >
+                        🗑️
+                      </button>
                     </div>
                   ))}
                 </div>
+
                 <div style={{ height:1, background:'#28282F', marginBottom:14 }} />
-                <div style={{ display:'flex', justifyContent:'space-between', fontWeight:800, fontSize:14, marginBottom:14 }}>
-                  <span style={{ color:'#A0A0B0' }}>Total Tagihan</span><span style={{ color:'#F2A900' }}>{G(cartTotal)}</span>
+                <div style={{ display:'flex', justifyContent:'space-between', fontWeight:900, fontSize:15, marginBottom:16 }}>
+                  <span style={{ color:'#A0A0B0', fontSize:13 }}>Total Tagihan</span>
+                  <span style={{ color:'#F2A900', fontSize:18 }}>{G(cartTotal)}</span>
                 </div>
-                <button className="btn btn-gold" style={{ width:'100%', justifyContent:'center' }} onClick={() => { checkoutMarketplace(cart, cartTotal); setCart([]); }}>Checkout Sekarang</button>
+
+                <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                  <button className="btn btn-gold" style={{ width:'100%', justifyContent:'center', padding:'12px 0', fontSize:13.5 }} onClick={() => { checkoutMarketplace(cart, cartTotal); setCart([]); }}>
+                    🛒 Checkout Sekarang ({G(cartTotal)})
+                  </button>
+                  <button className="btn btn-ghost" style={{ width:'100%', justifyContent:'center', fontSize:11, color:'#F04F4F' }} onClick={() => setCart([])}>
+                    Kosongkan Keranjang
+                  </button>
+                </div>
               </>
             ) : (
-              <div style={{ padding:'30px 0', textAlign:'center', color:'#5C5C70', fontSize:13 }}>Keranjang kosong</div>
+              <div style={{ padding:'40px 0', textAlign:'center', color:'#5C5C70', fontSize:13 }}>
+                <div style={{ fontSize:32, marginBottom:8 }}>🛒</div>
+                Keranjang Anda masih kosong.<br/>Pilih produk di panel kiri.
+              </div>
             )}
           </div>
         </div>
@@ -590,52 +602,6 @@ export const CustomerPortal = () => {
 
       {/* ── MODALS ──────────────────────────────────────────────────────── */}
       {cardModal && <MemberCardModal member={member} onClose={() => setCardModal(false)} />}
-
-      {/* Store CRUD Modal */}
-      {storeModal && (
-        <div className="modal-overlay" onClick={() => setStoreModal(false)}>
-          <div className="card" onClick={e => e.stopPropagation()} style={{ padding:28, maxWidth:440, width:'100%' }}>
-            <div style={{ fontWeight:800, fontSize:16, marginBottom:16, paddingBottom:12, borderBottom:'1px solid #28282F' }}>
-              {editingItem ? '✏️ Edit Produk Store' : '✨ Tambah Produk Store Baru'}
-            </div>
-            <form onSubmit={handleSaveStoreProduct} style={{ display:'flex', flexDirection:'column', gap:12 }}>
-              <div>
-                <label className="label">Nama Produk *</label>
-                <input className="input" placeholder="cth. AURA Leather Care Wax" value={storeForm.name} onChange={e => setStoreForm({ ...storeForm, name: e.target.value })} required />
-              </div>
-              <div>
-                <label className="label">Kategori *</label>
-                <select className="input" value={storeForm.category} onChange={e => setStoreForm({ ...storeForm, category: e.target.value })}>
-                  <option value="autocare">Autocare Product</option>
-                  <option value="merchandise">Official Merchandise</option>
-                </select>
-              </div>
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
-                <div>
-                  <label className="label">Harga (Rp) *</label>
-                  <input type="number" className="input" placeholder="150000" value={storeForm.price} onChange={e => setStoreForm({ ...storeForm, price: e.target.value })} required />
-                </div>
-                <div>
-                  <label className="label">Stok Jumlah *</label>
-                  <input type="number" className="input" placeholder="20" value={storeForm.stock} onChange={e => setStoreForm({ ...storeForm, stock: e.target.value })} required />
-                </div>
-              </div>
-              <div>
-                <label className="label">Satuan Unit</label>
-                <select className="input" value={storeForm.unit} onChange={e => setStoreForm({ ...storeForm, unit: e.target.value })}>
-                  <option value="Botol">Botol</option>
-                  <option value="Pcs">Pcs</option>
-                  <option value="Kit">Kit</option>
-                </select>
-              </div>
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginTop:8 }}>
-                <button type="button" className="btn btn-ghost" style={{ justifyContent:'center' }} onClick={() => setStoreModal(false)}>Batal</button>
-                <button type="submit" className="btn btn-gold" style={{ justifyContent:'center' }}>Simpan Produk</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
       {qrisModal && (
         <div className="modal-overlay" onClick={() => setQrisModal(false)}>
