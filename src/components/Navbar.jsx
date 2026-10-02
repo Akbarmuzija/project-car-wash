@@ -10,7 +10,7 @@ const NAV_ROLES = [
 ];
 
 export const Navbar = () => {
-  const { activeRole, setActiveRole, selectedBranch, setSelectedBranch, notification } = useCarWash();
+  const { activeRole, setActiveRole, selectedBranch, setSelectedBranch, notification, authUsers } = useCarWash();
   const [time, setTime] = useState('');
 
   useEffect(() => {
@@ -64,6 +64,7 @@ export const Navbar = () => {
           }}>
             {NAV_ROLES.map(r => {
               const active = activeRole === r.id;
+              const isAuth = !!authUsers[r.id];
               return (
                 <button key={r.id} onClick={() => setActiveRole(r.id)}
                   style={{
@@ -79,6 +80,13 @@ export const Navbar = () => {
                   }}>
                   <span style={{ fontSize: 13 }}>{r.icon}</span>
                   <span>{r.label}</span>
+                  {isAuth && (
+                    <span style={{
+                      width: 6, height: 6, borderRadius: '50%',
+                      background: active ? '#0D0D0F' : '#0EC278',
+                      boxShadow: active ? 'none' : '0 0 6px #0EC278',
+                    }} title="Sesi Login Aktif" />
+                  )}
                 </button>
               );
             })}

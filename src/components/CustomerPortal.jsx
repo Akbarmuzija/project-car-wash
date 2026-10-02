@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useCarWash } from '../context/CarWashContext';
+import { LandingPage } from './LandingPage';
 
 // ── Service catalogue ─────────────────────────────────────────────────────────
 const SERVICES = [
@@ -174,7 +175,7 @@ const MemberCardModal = ({ member, onClose }) => {
 export const CustomerPortal = () => {
   const {
     members, reservations, createReservation, triggerLateArrival,
-    inventory, checkoutMarketplace, showToast
+    inventory, checkoutMarketplace, showToast, authUsers, logoutUser
   } = useCarWash();
 
   const [tab, setTab]         = useState('reservasi');
@@ -188,7 +189,14 @@ export const CustomerPortal = () => {
   const [cart, setCart]       = useState([]);
   const [cardModal, setCardModal] = useState(false);
 
-  const member    = members[0];
+  // If customer is not logged in, show Landing Page first!
+  const member = authUsers.pelanggan || members[0];
+  const isLoggedIn = !!authUsers.pelanggan;
+
+  if (!isLoggedIn) {
+    return <LandingPage />;
+  }
+
   const myRes     = reservations.filter(r => r.phone === member.phone);
   const activeRes = myRes.find(r => !['completed','cancelled'].includes(r.status)) || myRes[0];
 
@@ -273,7 +281,10 @@ export const CustomerPortal = () => {
               <div style={{ fontSize:28, fontWeight:900, color:'#F2A900', letterSpacing:'-.03em', lineHeight:1 }}>{member.points} <span style={{ fontSize:13, color:'#A0A0B0', fontWeight:500 }}>pts</span></div>
             </div>
             <div style={{ width:1, height:40, background:'#28282F' }} />
-            <button className="btn btn-gold" style={{ fontSize:12 }} onClick={() => setCardModal(true)}>🪪 Lihat Member Card</button>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button className="btn btn-gold" style={{ fontSize:12 }} onClick={() => setCardModal(true)}>🪪 Member Card</button>
+              <button className="btn btn-ghost" style={{ fontSize:12, color:'#F04F4F', border:'1px solid rgba(240,79,79,.3)' }} onClick={() => logoutUser('pelanggan')}>🚪 Logout</button>
+            </div>
           </div>
         </div>
       </div>

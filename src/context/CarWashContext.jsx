@@ -69,7 +69,6 @@ export const initialTransactions = [
   { id: 'INV-20260930-005', date: '2026-09-30 18:15', customer: 'Dhani Pratama', cashier: 'Kasir - Rian', channel: 'pos_cashier', amount: 250000, method: 'credit_card', status: 'success', branch: 'bsd_city', items: ['Premium Clean (Rp 250.000)'] }
 ];
 
-export const CarWashProvider = ({ children }) => {
   const [activeRole, setActiveRole] = useState('pelanggan'); // 'pelanggan' | 'welcomer' | 'kasir' | 'inventori' | 'owner'
   const [selectedBranch, setSelectedBranch] = useState('senopati');
   const [members, setMembers] = useState(initialMembers);
@@ -80,6 +79,25 @@ export const CarWashProvider = ({ children }) => {
     { id: 'ORD-8801', user: 'Budi Santoso', phone: '081299887766', total: 185000, items: 'AURA Quick Detailer Spray 500ml (1x)', status: 'ready_for_pickup', date: '2026-09-30 17:00' }
   ]);
   const [notification, setNotification] = useState(null);
+
+  // Auth session state per role
+  const [authUsers, setAuthUsers] = useState({
+    pelanggan: null, // null or member object
+    welcomer: null,  // null or staff object
+    kasir: null,     // null or cashier object
+    inventori: null, // null or staff object
+    owner: null,     // null or owner object
+  });
+
+  const loginUser = (role, userData) => {
+    setAuthUsers(prev => ({ ...prev, [role]: userData }));
+    showToast(`Berhasil login sebagai ${userData.name} (${role.toUpperCase()})`, 'success');
+  };
+
+  const logoutUser = (role) => {
+    setAuthUsers(prev => ({ ...prev, [role]: null }));
+    showToast(`Berhasil logout dari sesi ${role.toUpperCase()}`, 'info');
+  };
 
   const showToast = (message, type = 'info') => {
     setNotification({ message, type });
@@ -475,6 +493,9 @@ export const CarWashProvider = ({ children }) => {
       setActiveRole,
       selectedBranch,
       setSelectedBranch,
+      authUsers,
+      loginUser,
+      logoutUser,
       members,
       inventory,
       reservations,

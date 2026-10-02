@@ -6,16 +6,37 @@ import { WelcomerDashboard } from './components/WelcomerDashboard';
 import { KasirPOS } from './components/KasirPOS';
 import { InventoriDashboard } from './components/InventoriDashboard';
 import { OwnerDashboard } from './components/OwnerDashboard';
+import { RoleLoginGate } from './components/RoleLoginGate';
 
 const MainContent = () => {
   const { activeRole } = useCarWash();
   return (
     <main style={{ minHeight: 'calc(100vh - 60px)', paddingBottom: 60 }}>
       {activeRole === 'pelanggan' && <CustomerPortal />}
-      {activeRole === 'welcomer'  && <WelcomerDashboard />}
-      {activeRole === 'kasir'     && <KasirPOS />}
-      {activeRole === 'inventori' && <InventoriDashboard />}
-      {activeRole === 'owner'     && <OwnerDashboard />}
+      
+      {activeRole === 'welcomer' && (
+        <RoleLoginGate role="welcomer">
+          <WelcomerDashboard />
+        </RoleLoginGate>
+      )}
+
+      {activeRole === 'kasir' && (
+        <RoleLoginGate role="kasir">
+          <KasirPOS />
+        </RoleLoginGate>
+      )}
+
+      {activeRole === 'inventori' && (
+        <RoleLoginGate role="inventori">
+          <InventoriDashboard />
+        </RoleLoginGate>
+      )}
+
+      {activeRole === 'owner' && (
+        <RoleLoginGate role="owner">
+          <OwnerDashboard />
+        </RoleLoginGate>
+      )}
     </main>
   );
 };
