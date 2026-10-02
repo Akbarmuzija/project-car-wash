@@ -4,15 +4,20 @@ import { useCarWash } from '../context/CarWashContext';
 const G = (v) => `Rp ${Number(v).toLocaleString('id-ID')}`;
 
 const STATUS_COLOR = {
-  confirmed: '#F2A900', checked_in: '#38BDF8',
-  in_progress: '#0EC278', rescheduled_pending: '#F04F4F', completed: '#5C5C70',
-};
-const STATUS_LABEL = {
-  confirmed: 'Menunggu', checked_in: 'Check-In',
-  in_progress: 'Dikerjakan', rescheduled_pending: '⏰ Terlambat', completed: 'Selesai',
+  confirmed: '#F2A900',
+  checked_in: '#38BDF8',
+  completed: '#0EC278',
+  rescheduled_pending: '#F04F4F',
 };
 
-// ── Walk-in services (same catalogue as customer portal) ────────────────────
+const STATUS_LABEL = {
+  confirmed: 'Menunggu Check-In',
+  checked_in: 'Checked In',
+  completed: 'Selesai (Checked Out)',
+  rescheduled_pending: '⏰ Terlambat >5m',
+};
+
+// ── Walk-in services catalogue ──────────────────────────────────────────────
 const WALK_SERVICES = [
   {
     id: 'fast_clean', name: 'Fast Clean Express', emoji: '⚡',
@@ -33,7 +38,10 @@ const WALK_SERVICES = [
 ];
 
 export const WelcomerDashboard = () => {
-  const { reservations, members, checkInCustomer, walkInCustomer, registerMember, showToast } = useCarWash();
+  const {
+    reservations, members, checkInCustomer, checkOutCustomer,
+    walkInCustomer, registerMember, showToast
+  } = useCarWash();
 
   // ── QR / code scan ──────────────────────────────────────────────────────────
   const [scan, setScan]       = useState('');
@@ -44,19 +52,24 @@ export const WelcomerDashboard = () => {
   const [tab, setTab] = useState('queue');
 
   // ── Walk-In state ──────────────────────────────────────────────────────────
-  const [searchQuery, setSearchQuery]   = useState('');       // name or phone search
-  const [searchResults, setSearchResults] = useState(null);  // null = not searched yet, [] = no result
-  const [selectedMember, setSelectedMember] = useState(null);// member chosen from list
+  const [searchQuery, setSearchQuery]     = useState('');
+  const [searchResults, setSearchResults] = useState(null);
+  const [selectedMember, setSelectedMember] = useState(null);
 
-  // Walk-in form (auto-filled if member found)
+  // Walk-in form
   const [wiForm, setWiForm] = useState({
     name: '', phone: '', vehicle: '', plate: '',
     service: 'fast_clean', variant: 'medium',
+    payMethod: 'qris', // 'qris' | 'cash'
   });
 
-  // New member registration panel (shown if customer not found or manually opened)
+  // Modal states
   const [addMemberPanel, setAddMemberPanel] = useState(false);
   const [newMember, setNewMember] = useState({ name: '', phone: '', vehicle: '', plate: '', username: '', password: '123456' });
+  const [qrisModal, setQrisModal] = useState(false);
+  const [pendingWalkInData, setPendingWalkInData] = useState(null);
+  const [waModal, setWaModal] = useState(false);
+  const [waData, setWaData] = useState(null);
 
   // ── Derived ────────────────────────────────────────────────────────────────
   const queue   = reservations.filter(r => !['completed', 'cancelled'].includes(r.status));
@@ -71,7 +84,7 @@ export const WelcomerDashboard = () => {
       String(r.queueNumber) === scan.trim()
     );
     if (r) setFound(r);
-    else showToast('Kode tiket tidak ditemukan', 'error');
+    else showToast('Kode tiket / antrean tidak ditemukan', 'error');
   };
 
   const handleCheckIn = (id) => {
@@ -79,6 +92,11 @@ export const WelcomerDashboard = () => {
     setFound(null);
     setScan('');
     showToast('Check-In berhasil!', 'success');
+  };
+
+  const handleCheckOut = (id) => {
+    checkOutCustomer(id);
+    showToast('Check-Out (Selesai) berhasil!', 'success');
   };
 
   // ── Handlers: Member Search ────────────────────────────────────────────────
@@ -92,7 +110,7 @@ export const WelcomerDashboard = () => {
     setSearchResults(results);
     setSelectedMember(null);
     setAddMemberPanel(false);
-    setWiForm({ name: '', phone: '', vehicle: '', plate: '', service: 'fast_clean', variant: 'medium' });
+    setWiForm(f => ({ ...f, name: '', phone: '', vehicle: '', plate: '' }));
     if (results.length === 0) showToast('Pelanggan tidak ditemukan — Silakan daftarkan member baru', 'warning');
   };
 
@@ -107,7 +125,7 @@ export const WelcomerDashboard = () => {
     setSearchResults(null);
     setSelectedMember(null);
     setAddMemberPanel(false);
-    setWiForm({ name: '', phone: '', vehicle: '', plate: '', service: 'fast_clean', variant: 'medium' });
+    setWiForm({ name: '', phone: '', vehicle: '', plate: '', service: 'fast_clean', variant: 'medium', payMethod: 'qris' });
   };
 
   // ── Handlers: Register New Member ─────────────────────────────────────────
@@ -126,18 +144,60 @@ export const WelcomerDashboard = () => {
   };
 
   // ── Handlers: Walk-In Submit ───────────────────────────────────────────────
-  const handleWalkIn = (e) => {
+  const handleWalkInSubmit = (e) => {
     e.preventDefault();
     const svc = WALK_SERVICES.find(s => s.id === wiForm.service);
     const vrnt = svc.variants.find(v => v.id === wiForm.variant);
-    walkInCustomer({
-      name: wiForm.name, phone: wiForm.phone,
-      vehicle: wiForm.vehicle, plate: wiForm.plate,
-      service: wiForm.service, serviceName: `${svc.name} (${vrnt.label})`,
-      variant: wiForm.variant, price: vrnt.price,
-    });
+
+    const walkData = {
+      name: wiForm.name,
+      phone: wiForm.phone,
+      vehicle: wiForm.vehicle,
+      plate: wiForm.plate,
+      service: wiForm.service,
+      serviceName: `${svc.name} (${vrnt.label})`,
+      variant: wiForm.variant,
+      price: vrnt.price,
+      paymentMethod: wiForm.payMethod,
+    };
+
+    if (wiForm.payMethod === 'qris') {
+      // Show QRIS modal directly at Welcomer!
+      setPendingWalkInData(walkData);
+      setQrisModal(true);
+    } else {
+      // Cash payment -> Process walk-in as unpaid & direct customer to Kasir POS
+      const res = walkInCustomer({ ...walkData, paymentMethod: 'cash' });
+      triggerWaSimulation(res, 'cash');
+      setTab('queue');
+      clearSearch();
+    }
+  };
+
+  // Confirm QRIS Payment at Welcomer
+  const handleConfirmQrisWalkIn = () => {
+    if (!pendingWalkInData) return;
+    const res = walkInCustomer({ ...pendingWalkInData, paymentMethod: 'qris' });
+    setQrisModal(false);
+    setPendingWalkInData(null);
+    triggerWaSimulation(res, 'qris');
     setTab('queue');
     clearSearch();
+  };
+
+  // Trigger WhatsApp Simulation Popup
+  const triggerWaSimulation = (reservation, method) => {
+    setWaData({
+      customerName: reservation.customerName,
+      phone: reservation.phone,
+      queueNumber: reservation.queueNumber,
+      bookingCode: reservation.bookingCode,
+      vehicle: `${reservation.vehicle} (${reservation.plate})`,
+      serviceName: reservation.serviceName,
+      price: reservation.price,
+      payMethod: method === 'qris' ? 'LUNAS (QRIS Welcomer)' : 'PEMBAYARAN CASH (Kasir POS)',
+    });
+    setWaModal(true);
   };
 
   const currentSvc   = WALK_SERVICES.find(s => s.id === wiForm.service);
@@ -180,7 +240,6 @@ export const WelcomerDashboard = () => {
               <button className="btn btn-gold" onClick={handleScan} style={{ flexShrink: 0 }}>🔍 Scan</button>
             </div>
           </div>
-          {/* Quick shortcut buttons */}
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
             {queue.slice(0, 4).map(r => (
               <button key={r.id} className="btn btn-ghost" style={{ fontSize: 12 }}
@@ -224,6 +283,9 @@ export const WelcomerDashboard = () => {
                 {found.status === 'confirmed' && (
                   <button className="btn btn-gold" onClick={() => handleCheckIn(found.id)}>✅ Proses Check-In</button>
                 )}
+                {found.status === 'checked_in' && (
+                  <button className="btn btn-gold" style={{ background:'rgba(14,194,120,.2)', color:'#0EC278', border:'1px solid #0EC278' }} onClick={() => handleCheckOut(found.id)}>🏁 Check-Out (Selesai)</button>
+                )}
                 <button className="btn btn-ghost" onClick={() => setFound(null)} style={{ fontSize: 12 }}>✕ Tutup</button>
               </div>
             </div>
@@ -256,12 +318,12 @@ export const WelcomerDashboard = () => {
         })}
       </div>
 
-      {/* ═══ ANTREAN ══════════════════════════════════════════════════ */}
+      {/* ═══ ANTREAN AKTIF (Check-In & Check-Out Only) ════════════════ */}
       {tab === 'queue' && (
         <div className="card" style={{ overflow: 'hidden' }}>
           <table className="data-table">
             <thead>
-              <tr><th>Antrean</th><th>Pelanggan</th><th>Kendaraan</th><th>Layanan</th><th>Slot</th><th>Tipe</th><th>Status</th><th>Aksi</th></tr>
+              <tr><th>Antrean</th><th>Pelanggan</th><th>Kendaraan</th><th>Layanan</th><th>Bayar</th><th>Tipe</th><th>Status</th><th>Aksi</th></tr>
             </thead>
             <tbody>
               {queue.length === 0 && (
@@ -279,7 +341,11 @@ export const WelcomerDashboard = () => {
                     <div className="mono" style={{ fontSize: 11, color: '#A0A0B0' }}>{r.plate}</div>
                   </td>
                   <td style={{ fontSize: 13 }}>{r.serviceName}</td>
-                  <td className="mono" style={{ fontSize: 12, color: '#A0A0B0' }}>{r.reservationTime ?? '–'}</td>
+                  <td>
+                    <span className="badge" style={{ background: r.paymentStatus==='paid' ? 'rgba(14,194,120,.15)' : 'rgba(240,79,79,.15)', color: r.paymentStatus==='paid' ? '#0EC278' : '#F04F4F', border: `1px solid ${r.paymentStatus==='paid'?'#0EC278':'#F04F4F'}44` }}>
+                      {r.paymentStatus==='paid' ? '✓ Lunas' : '⏳ Belum Bayar'}
+                    </span>
+                  </td>
                   <td>
                     <span className={`badge ${r.type === 'walkin' ? 'badge-blue' : 'badge-gold'}`}>
                       {r.type === 'walkin' ? '🚶 Walk-In' : '📅 Reservasi'}
@@ -293,10 +359,14 @@ export const WelcomerDashboard = () => {
                   <td>
                     <div style={{ display: 'flex', gap: 8 }}>
                       {r.status === 'confirmed' && (
-                        <button className="btn btn-gold" style={{ fontSize: 11, padding: '6px 12px' }} onClick={() => handleCheckIn(r.id)}>✅ Check-In</button>
+                        <button className="btn btn-gold" style={{ fontSize: 11, padding: '6px 12px' }} onClick={() => handleCheckIn(r.id)}>
+                          ✅ Check-In
+                        </button>
                       )}
                       {r.status === 'checked_in' && (
-                        <button className="btn btn-ghost" style={{ fontSize: 11, padding: '6px 12px' }}>▶ Mulai</button>
+                        <button className="btn btn-gold" style={{ fontSize: 11, padding: '6px 12px', background:'rgba(14,194,120,.15)', color:'#0EC278', border:'1px solid rgba(14,194,120,.4)' }} onClick={() => handleCheckOut(r.id)}>
+                          🏁 Check-Out (Selesai)
+                        </button>
                       )}
                     </div>
                   </td>
@@ -307,7 +377,7 @@ export const WelcomerDashboard = () => {
         </div>
       )}
 
-      {/* ═══ WALK-IN ══════════════════════════════════════════════════ */}
+      {/* ═══ WALK-IN BARU ══════════════════════════════════════════════ */}
       {tab === 'walkin' && (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24 }}>
 
@@ -381,18 +451,13 @@ export const WelcomerDashboard = () => {
                           ))}
                         </div>
                       ) : (
-                        /* Not found state */
                         <div style={{ padding: '20px', textAlign: 'center', background: '#0D0D0F', borderRadius: 12, border: '1px dashed #28282F' }}>
                           <div style={{ fontSize: 28, marginBottom: 8 }}>🔍</div>
                           <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 6 }}>Pelanggan Tidak Ditemukan</div>
                           <div style={{ fontSize: 12, color: '#5C5C70', marginBottom: 16 }}>
                             Tidak ada member dengan nama atau nomor HP "<strong style={{ color: '#A0A0B0' }}>{searchQuery}</strong>"
                           </div>
-                          <button
-                            className="btn btn-gold"
-                            onClick={() => setAddMemberPanel(true)}
-                            style={{ justifyContent: 'center' }}
-                          >
+                          <button className="btn btn-gold" onClick={() => setAddMemberPanel(true)} style={{ justifyContent: 'center' }}>
                             + Daftarkan Member Baru
                           </button>
                         </div>
@@ -402,7 +467,7 @@ export const WelcomerDashboard = () => {
 
                   {/* Add New Member Panel */}
                   {addMemberPanel && (
-                    <div style={{ marginTop: 16, padding: 20, background: 'gradient-dark', border: '1px solid rgba(242,169,0,.25)', borderRadius: 12 }}>
+                    <div style={{ marginTop: 16, padding: 20, background: '#141417', border: '1px solid rgba(242,169,0,.25)', borderRadius: 12 }}>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, paddingBottom: 12, borderBottom: '1px solid rgba(242,169,0,.15)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                           <span style={{ fontSize: 16 }}>✨</span>
@@ -442,7 +507,6 @@ export const WelcomerDashboard = () => {
                             value={newMember.plate} onChange={e => setNewMember({ ...newMember, plate: e.target.value.toUpperCase() })} required />
                         </div>
 
-                        {/* Username & Password inputs */}
                         <div>
                           <label className="label">Username Member *</label>
                           <input className="input mono" placeholder="cth. andika.pratama"
@@ -464,15 +528,10 @@ export const WelcomerDashboard = () => {
                           </button>
                         </div>
                       </form>
-                      <div style={{ marginTop: 12, padding: '8px 12px', background: 'rgba(242,169,0,.07)', borderRadius: 8, fontSize: 11, color: '#F2A900', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span>🎁 Auto-generate Member ID & bonus <strong>50 poin</strong></span>
-                        <span style={{ fontFamily: 'monospace', color: '#fff' }}>Pass: 123456</span>
-                      </div>
                     </div>
                   )}
                 </>
               ) : (
-                /* Selected member card */
                 <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', background: 'rgba(14,194,120,.07)', border: '1px solid rgba(14,194,120,.25)', borderRadius: 10 }}>
                   <div style={{ width: 42, height: 42, borderRadius: 10, background: 'rgba(14,194,120,.12)', border: '1px solid rgba(14,194,120,.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: '#0EC278', fontSize: 14, flexShrink: 0 }}>
                     {selectedMember.name.split(' ').map(w => w[0]).join('').slice(0, 2)}
@@ -506,7 +565,6 @@ export const WelcomerDashboard = () => {
                 <span style={{ fontWeight: 700, fontSize: 14, color: selectedMember ? '#fff' : '#5C5C70' }}>Pilih Layanan & Ukuran Kendaraan</span>
               </div>
 
-              {/* Service selector */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 16, opacity: selectedMember ? 1 : 0.4, pointerEvents: selectedMember ? 'auto' : 'none' }}>
                 {WALK_SERVICES.map(s => {
                   const active = wiForm.service === s.id;
@@ -531,7 +589,7 @@ export const WelcomerDashboard = () => {
                 })}
               </div>
 
-              {/* Variant (size) selector */}
+              {/* Variant selector */}
               <div style={{ opacity: selectedMember ? 1 : 0.4, pointerEvents: selectedMember ? 'auto' : 'none' }}>
                 <label className="label">Ukuran Kendaraan</label>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>
@@ -559,33 +617,36 @@ export const WelcomerDashboard = () => {
               </div>
             </div>
 
-            {/* ── Step 3: Konfirmasi & Submit ──────────────────────── */}
-            <form onSubmit={handleWalkIn} className="card" style={{ padding: 22 }}>
+            {/* ── Step 3: Metode Pembayaran & Submit Walk-In ──────────────────────── */}
+            <form onSubmit={handleWalkInSubmit} className="card" style={{ padding: 22 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, paddingBottom: 14, borderBottom: '1px solid #28282F' }}>
                 <div style={{ width: 26, height: 26, borderRadius: '50%', background: selectedMember ? '#F2A900' : '#28282F', color: selectedMember ? '#0D0D0F' : '#5C5C70', fontSize: 12, fontWeight: 900, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>3</div>
-                <span style={{ fontWeight: 700, fontSize: 14, color: selectedMember ? '#fff' : '#5C5C70' }}>Data Kendaraan & Proses Walk-In</span>
+                <span style={{ fontWeight: 700, fontSize: 14, color: selectedMember ? '#fff' : '#5C5C70' }}>Pilih Metode Pembayaran Walk-In</span>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14, opacity: selectedMember ? 1 : 0.4, pointerEvents: selectedMember ? 'auto' : 'none' }}>
-                <div style={{ gridColumn: '1/-1' }}>
-                  <label className="label">Nama Lengkap</label>
-                  <input className="input" value={wiForm.name}
-                    onChange={e => setWiForm(f => ({ ...f, name: e.target.value }))} required />
-                </div>
-                <div>
-                  <label className="label">No. WhatsApp</label>
-                  <input className="input" value={wiForm.phone}
-                    onChange={e => setWiForm(f => ({ ...f, phone: e.target.value }))} required />
-                </div>
-                <div>
-                  <label className="label">Plat Nomor</label>
-                  <input className="input mono" value={wiForm.plate}
-                    onChange={e => setWiForm(f => ({ ...f, plate: e.target.value.toUpperCase() }))} required />
-                </div>
-                <div style={{ gridColumn: '1/-1' }}>
-                  <label className="label">Jenis Kendaraan</label>
-                  <input className="input" value={wiForm.vehicle}
-                    onChange={e => setWiForm(f => ({ ...f, vehicle: e.target.value }))} required />
+              {/* Payment Method Selector */}
+              <div style={{ opacity: selectedMember ? 1 : 0.4, pointerEvents: selectedMember ? 'auto' : 'none', marginBottom: 16 }}>
+                <label className="label">Metode Pembayaran *</label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                  {[
+                    { id: 'qris', label: '📱 QRIS Instant', sub: 'Muncul QR & Otomatis ke Kasir/Owner', color: '#38BDF8' },
+                    { id: 'cash', label: '💵 Bayar Tunai (Cash)', sub: 'Diarahkan ke Meja Kasir POS', color: '#0EC278' },
+                  ].map(m => {
+                    const active = wiForm.payMethod === m.id;
+                    return (
+                      <div key={m.id}
+                        onClick={() => setWiForm(f => ({ ...f, payMethod: m.id }))}
+                        style={{
+                          border: `2px solid ${active ? m.color : '#28282F'}`,
+                          borderRadius: 10, padding: 12, cursor: 'pointer',
+                          background: active ? `${m.color}12` : '#0D0D0F',
+                          transition: 'all .15s',
+                        }}>
+                        <div style={{ fontWeight: 800, fontSize: 13, color: active ? m.color : '#fff', marginBottom: 4 }}>{m.label}</div>
+                        <div style={{ fontSize: 11, color: '#5C5C70', lineHeight: 1.3 }}>{m.sub}</div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -596,7 +657,9 @@ export const WelcomerDashboard = () => {
                     <span>{currentSvc.name} ({currentVrnt.label})</span>
                     <span>{G(currentVrnt.price)}</span>
                   </div>
-                  <div style={{ fontSize: 11, color: '#5C5C70', marginBottom: 6 }}>Pembayaran di kasir (POS)</div>
+                  <div style={{ fontSize: 11, color: wiForm.payMethod==='qris'?'#38BDF8':'#0EC278', marginBottom: 6 }}>
+                    {wiForm.payMethod === 'qris' ? '📱 Pembayaran QRIS di Layar Welcomer' : '💵 Pembayaran Tunai di Meja Kasir POS'}
+                  </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 900, fontSize: 16, borderTop: '1px solid #28282F', paddingTop: 8 }}>
                     <span style={{ color: '#A0A0B0', fontSize: 12 }}>Total Tagihan</span>
                     <span style={{ color: '#F2A900' }}>{G(currentVrnt.price)}</span>
@@ -608,7 +671,7 @@ export const WelcomerDashboard = () => {
                 style={{ width: '100%', justifyContent: 'center', padding: '12px 0', fontSize: 13.5 }}
                 disabled={!selectedMember}
               >
-                🚶 Proses Walk-In & Tambah ke Antrean
+                {wiForm.payMethod === 'qris' ? '📱 Tampilkan QR Code & Proses Walk-In' : '🚶 Proses Walk-In & Arahkan ke Kasir'}
               </button>
             </form>
           </div>
@@ -616,13 +679,12 @@ export const WelcomerDashboard = () => {
           {/* RIGHT: Panduan */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div className="card" style={{ padding: 22 }}>
-              <div style={{ fontWeight: 800, fontSize: 14, marginBottom: 16, paddingBottom: 12, borderBottom: '1px solid #28282F' }}>📋 Alur Proses Walk-In</div>
+              <div style={{ fontWeight: 800, fontSize: 14, marginBottom: 16, paddingBottom: 12, borderBottom: '1px solid #28282F' }}>📋 Alur Pembayaran & Notifikasi WA</div>
               {[
-                { step: '1', title: 'Cari Data Member',   desc: 'Tanyakan nama atau nomor HP pelanggan untuk mengecek status member', color: '#F2A900' },
-                { step: '2', title: 'Pilih / Tambah',     desc: 'Klik member yang sesuai, atau daftarkan pelanggan baru jika belum ada', color: '#38BDF8' },
-                { step: '3', title: 'Pilih Layanan',      desc: 'Pilih paket cuci dan ukuran kendaraan (Small / Medium / Big)', color: '#0EC278' },
-                { step: '4', title: 'Proses Masuk Antrian', desc: 'Klik tombol Proses Walk-In — nomor antrean otomatis digenerate', color: '#A855F7' },
-                { step: '5', title: 'Pembayaran di Kasir', desc: 'Pelanggan membayar di meja kasir (cash / QRIS / debit)', color: '#F2A900' },
+                { step: '1', title: 'Pilih Metode QRIS / Cash', desc: 'Sesuai permintaan pelanggan', color: '#F2A900' },
+                { step: '2', title: 'QRIS Langsung Lunas', desc: 'Scan QR di Welcomer -> Catatan keuangan masuk ke Kasir POS & Owner', color: '#38BDF8' },
+                { step: '3', title: 'Cash via Kasir POS', desc: 'Pelanggan diberi Kode Antrean untuk bayar di meja kasir', color: '#0EC278' },
+                { step: '4', title: 'Simulasi WA Gateway', desc: 'Pesan notifikasi WA otomatis terkirim ke no. HP pelanggan', color: '#A855F7' },
               ].map(g => (
                 <div key={g.step} style={{ display: 'flex', gap: 12, marginBottom: 14 }}>
                   <div style={{ width: 26, height: 26, borderRadius: '50%', background: `${g.color}18`, border: `1px solid ${g.color}44`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 900, color: g.color, flexShrink: 0 }}>{g.step}</div>
@@ -630,29 +692,6 @@ export const WelcomerDashboard = () => {
                     <div style={{ fontSize: 13, fontWeight: 700 }}>{g.title}</div>
                     <div style={{ fontSize: 12, color: '#5C5C70', marginTop: 2, lineHeight: 1.5 }}>{g.desc}</div>
                   </div>
-                </div>
-              ))}
-            </div>
-
-            {/* QR / reservasi reminder */}
-            <div style={{ padding: 16, background: 'rgba(240,79,79,.06)', border: '1px solid rgba(240,79,79,.2)', borderRadius: 12 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#F04F4F', marginBottom: 6 }}>⚠️ Aturan Keterlambatan</div>
-              <div style={{ fontSize: 12, color: '#A0A0B0', lineHeight: 1.6 }}>
-                Pelanggan dengan reservasi yang terlambat datang <strong style={{ color: '#F04F4F' }}>&gt;5 menit</strong> dari slot yang dipilih akan otomatis dialihkan ke status <strong>Pending Reschedule</strong> dan notifikasi dikirim via WhatsApp.
-              </div>
-            </div>
-
-            {/* Member tier info */}
-            <div className="card" style={{ padding: 18 }}>
-              <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 12 }}>🎖️ Diskon Otomatis per Tier</div>
-              {[
-                { tier: 'Silver',       disc: '0%',  color: '#A0A0B0' },
-                { tier: 'VIP Gold',     disc: '10%', color: '#F2A900' },
-                { tier: 'VIP Platinum', disc: '15%', color: '#A855F7' },
-              ].map(t => (
-                <div key={t.tier} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                  <span className="badge" style={{ background: `${t.color}18`, color: t.color, border: `1px solid ${t.color}44`, fontSize: 11 }}>{t.tier}</span>
-                  <span style={{ fontWeight: 700, color: t.color, fontSize: 13 }}>{t.disc}</span>
                 </div>
               ))}
             </div>
@@ -681,13 +720,72 @@ export const WelcomerDashboard = () => {
                   <td style={{ fontSize: 12 }}>{r.serviceName}</td>
                   <td style={{ color: '#F2A900', fontWeight: 700 }}>{G(r.price)}</td>
                   <td><span className={`badge ${r.type === 'walkin' ? 'badge-blue' : 'badge-gold'}`}>{r.type === 'walkin' ? '🚶 Walk-In' : '📅 Reservasi'}</span></td>
-                  <td className="mono" style={{ fontSize: 11, color: '#5C5C70' }}>20:45 WIB</td>
+                  <td className="mono" style={{ fontSize: 11, color: '#5C5C70' }}>WIB</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
+
+      {/* ── MODAL QRIS WELCOMER ────────────────────────────────────────── */}
+      {qrisModal && pendingWalkInData && (
+        <div className="modal-overlay" onClick={() => setQrisModal(false)}>
+          <div className="card" onClick={e => e.stopPropagation()} style={{ padding: 28, maxWidth: 420, width: '100%', textAlign: 'center' }}>
+            <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>📱 Scan QRIS Walk-In Welcomer</div>
+            <div style={{ fontSize: 13, color: '#A0A0B0', marginBottom: 2 }}>{pendingWalkInData.name} · {pendingWalkInData.vehicle}</div>
+            <div style={{ fontSize: 12, color: '#5C5C70', marginBottom: 14 }}>{pendingWalkInData.serviceName}</div>
+            <div style={{ fontSize: 28, fontWeight: 900, color: '#F2A900', marginBottom: 16 }}>{G(pendingWalkInData.price)}</div>
+
+            <div style={{ background: '#fff', borderRadius: 14, padding: 16, display: 'inline-block', marginBottom: 16, border: '3px solid #F2A900', boxShadow: '0 0 24px rgba(242,169,0,.3)' }}>
+              <img src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=AURA-WALKIN-${pendingWalkInData.plate}`} alt="QRIS Welcomer" style={{ width: 160, height: 160, display: 'block' }} />
+            </div>
+
+            <div style={{ fontSize: 11, color: '#38BDF8', marginBottom: 20, background: 'rgba(56,189,248,.1)', padding: '8px 12px', borderRadius: 8 }}>
+              💡 Konfirmasi ini otomatis mencatat keuangan ke Kasir POS &amp; Owner Dashboard!
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+              <button className="btn btn-ghost" style={{ justifyContent: 'center' }} onClick={() => setQrisModal(false)}>Batal</button>
+              <button className="btn btn-gold" style={{ justifyContent: 'center' }} onClick={handleConfirmQrisWalkIn}>✅ Konfirmasi Lunas</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL SIMULASI WHATSAPP GATEWAY ────────────────────────────── */}
+      {waModal && waData && (
+        <div className="modal-overlay" onClick={() => setWaModal(false)}>
+          <div className="card" onClick={e => e.stopPropagation()} style={{ padding: 28, maxWidth: 440, width: '100%' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, paddingBottom: 12, borderBottom: '1px solid #28282F' }}>
+              <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(14,194,120,.2)', color: '#0EC278', fontSize: 16, fontWeight: 900, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>📲</div>
+              <div>
+                <div style={{ fontWeight: 800, fontSize: 15 }}>Simulasi WA Gateway (Terkirim)</div>
+                <div style={{ fontSize: 11, color: '#5C5C70' }}>Nomor HP: <span className="mono" style={{ color: '#fff' }}>{waData.phone}</span></div>
+              </div>
+            </div>
+
+            <div style={{ background: '#0D0D0F', borderRadius: 12, padding: 18, fontFamily: 'monospace', fontSize: 12.5, lineHeight: 1.8, border: '1px solid rgba(14,194,120,.3)', marginBottom: 20 }}>
+              <div style={{ color: '#0EC278', fontWeight: 800, marginBottom: 8 }}>🟢 [AURA WA GATEWAY AUTOMATION]</div>
+              <div>Halo <strong>{waData.customerName}</strong>, Terima kasih telah berkunjung ke AURA Auto Care! 🚗✨</div>
+              <div style={{ height: 1, background: '#28282F', margin: '8px 0' }} />
+              <div>🎫 No. Antrean: <strong style={{ color: '#F2A900', fontSize: 16 }}>#{waData.queueNumber}</strong></div>
+              <div>🔖 Kode Booking: <strong>{waData.bookingCode}</strong></div>
+              <div>🚘 Kendaraan: {waData.vehicle}</div>
+              <div>📦 Layanan: {waData.serviceName}</div>
+              <div>💰 Total: <strong>{G(waData.price)}</strong></div>
+              <div>💳 Status Bayar: <span style={{ color: '#F2A900' }}>{waData.payMethod}</span></div>
+              <div style={{ height: 1, background: '#28282F', margin: '8px 0' }} />
+              <div style={{ color: '#5C5C70', fontSize: 11 }}>Tunjukkan pesan ini atau Tiket QR Anda kepada staf kami saat kendaraan diserahkan.</div>
+            </div>
+
+            <button className="btn btn-gold" style={{ width: '100%', justifyContent: 'center' }} onClick={() => setWaModal(false)}>
+              ✓ Tutup Simulasi WA
+            </button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

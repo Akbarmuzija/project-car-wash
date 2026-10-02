@@ -21,13 +21,15 @@ const QUICK_ITEMS = [
 ];
 
 export const KasirPOS = () => {
-  const { transactions, processPayment, inventory, showToast } = useCarWash();
+  const { transactions, processPayment, reservations, payUnpaidReservation, inventory, showToast } = useCarWash();
   const [cart, setCart] = useState([]);
   const [method, setMethod] = useState('qris');
   const [cashIn, setCashIn] = useState('');
   const [receipt, setReceipt] = useState(null);
   const [tab, setTab] = useState('pos');
   const [discount, setDiscount] = useState(0);
+
+  const unpaidQueue = reservations.filter(r => r.paymentStatus === 'unpaid' && !['completed', 'cancelled'].includes(r.status));
 
   const addItem = (item) => {
     setCart(c => {
@@ -52,7 +54,7 @@ export const KasirPOS = () => {
     setCart([]); setCashIn(''); setDiscount(0);
   };
 
-  const dayTotal = transactions.reduce((s,t) => s+t.total, 0) + (transactions.length > 0 ? 0 : 0);
+  const dayTotal = transactions.reduce((s,t) => s + (t.amount || t.total || 0), 0);
   const txToday = [...transactions].slice(-10).reverse();
 
   return (
@@ -60,15 +62,24 @@ export const KasirPOS = () => {
 
       {/* Tab bar */}
       <div style={{ display:'flex', gap:4, marginBottom:24, borderBottom:'1px solid #28282F', paddingBottom:0 }}>
-        {[{ id:'pos',label:'💳 Point of Sale'},{id:'history',label:'📋 Riwayat Transaksi'}].map(t => {
+        {[
+          { id:'pos',label:'💳 Point of Sale'},
+          { id:'unpaid', label: `📌 Belum Bayar Kasir (${unpaidQueue.length})` },
+          { id:'history',label:'📋 Riwayat Transaksi'}
+        ].map(t => {
           const active = tab===t.id;
           return (
             <button key={t.id} onClick={()=>setTab(t.id)} style={{
               display:'flex', alignItems:'center', gap:7, padding:'10px 18px',
               border:'none', cursor:'pointer', fontSize:13, fontWeight:active?700:500,
-              background:'transparent', color:active?'#F2A900':'#A0A0B0',
+              background:'transparent', color: active ? '#F2A900' : (t.id==='unpaid'&&unpaidQueue.length>0 ? '#F04F4F' : '#A0A0B0'),
               borderBottom: active?'2px solid #F2A900':'2px solid transparent', marginBottom:-1, transition:'all .15s',
-            }}>{t.label}</button>
+            }}>
+              {t.label}
+              {t.id==='unpaid' && unpaidQueue.length > 0 && (
+                <span style={{ background:'#F04F4F', color:'#fff', borderRadius:'99px', fontSize:10, fontWeight:800, padding:'1px 6px' }}>{unpaidQueue.length}</span>
+              )}
+            </button>
           );
         })}
         <div style={{ marginLeft:'auto', display:'flex', alignItems:'center', gap:10, paddingBottom:8 }}>
@@ -77,12 +88,28 @@ export const KasirPOS = () => {
         </div>
       </div>
 
+      {/* ═══ TAB: POS KASIR ════════════════════════════════════════════ */}
       {tab === 'pos' && (
         <div style={{ display:'grid', gridTemplateColumns:'1fr 340px', gap:20, alignItems:'start' }}>
 
-          {/* LEFT: product grid */}
+          {/* LEFT: product grid & unpaid notification box */}
           <div>
-            <p className="tag" style={{ marginBottom:14 }}>Daftar Layanan & Produk</p>
+            {unpaidQueue.length > 0 && (
+              <div style={{ marginBottom: 16, padding: '14px 18px', background: 'rgba(240,79,79,.08)', border: '1px solid rgba(240,79,79,.25)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <span style={{ fontSize: 20 }}>📌</span>
+                  <div>
+                    <div style={{ fontWeight: 800, fontSize: 13, color: '#F04F4F' }}>Ada {unpaidQueue.length} Pelanggan Belum Bayar Tunai (Walk-In/Reservasi)</div>
+                    <div style={{ fontSize: 11, color: '#A0A0B0' }}>Klik tab "Belum Bayar Kasir" untuk memproses pembayaran tunai.</div>
+                  </div>
+                </div>
+                <button className="btn btn-gold" style={{ fontSize: 11, padding: '6px 12px' }} onClick={() => setTab('unpaid')}>
+                  Lihat Antrean →
+                </button>
+              </div>
+            )}
+
+            <p className="tag" style={{ marginBottom:14 }}>Daftar Layanan &amp; Produk</p>
             <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(160px, 1fr))', gap:10 }}>
               {QUICK_ITEMS.map(item => (
                 <button key={item.id} onClick={() => addItem(item)} style={{
@@ -192,12 +219,60 @@ export const KasirPOS = () => {
             )}
 
             <button className="btn btn-gold" onClick={handleProcess} style={{ width:'100%', justifyContent:'center', padding:'13px 0', fontSize:14 }}>
-              💳 Proses Transaksi & Cetak Struk
+              💳 Proses Transaksi &amp; Cetak Struk
             </button>
           </div>
         </div>
       )}
 
+      {/* ═══ TAB: ANTREAN BELUM BAYAR (PEMBAYARAN CASH WELCOMER) ════════ */}
+      {tab === 'unpaid' && (
+        <div className="card" style={{ padding: 22 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, paddingBottom: 14, borderBottom: '1px solid #28282F' }}>
+            <div>
+              <h3 style={{ fontSize: 16, fontWeight: 800, color: '#F04F4F' }}>📌 Antrean Belum Bayar (Pembayaran Tunai Kasir)</h3>
+              <p style={{ fontSize: 12, color: '#5C5C70' }}>Pelanggan walk-in / reservasi yang memilih bayar tunai di meja Kasir POS</p>
+            </div>
+            <span className="badge" style={{ background: 'rgba(240,79,79,.15)', color: '#F04F4F', border: '1px solid rgba(240,79,79,.3)', fontSize: 12 }}>
+              {unpaidQueue.length} Antrean Pending
+            </span>
+          </div>
+
+          <table className="data-table">
+            <thead>
+              <tr><th>No. Antrean</th><th>Kode Booking</th><th>Pelanggan</th><th>Kendaraan</th><th>Layanan</th><th>Total Tagihan</th><th>Aksi Kasir</th></tr>
+            </thead>
+            <tbody>
+              {unpaidQueue.length === 0 && (
+                <tr><td colSpan={7} style={{ textAlign: 'center', color: '#5C5C70', padding: '40px 0' }}>Tidak ada antrean pending pembayaran saat ini</td></tr>
+              )}
+              {unpaidQueue.map(r => (
+                <tr key={r.id}>
+                  <td style={{ fontWeight: 900, fontSize: 20, color: '#F2A900', fontFamily: 'monospace' }}>#{r.queueNumber}</td>
+                  <td className="mono" style={{ color: '#38BDF8', fontWeight: 700 }}>{r.bookingCode}</td>
+                  <td>
+                    <div style={{ fontWeight: 700, fontSize: 13 }}>{r.customerName}</div>
+                    <div style={{ fontSize: 11, color: '#5C5C70' }}>{r.phone}</div>
+                  </td>
+                  <td>
+                    <div style={{ fontSize: 13 }}>{r.vehicle}</div>
+                    <div className="mono" style={{ fontSize: 11, color: '#A0A0B0' }}>{r.plate}</div>
+                  </td>
+                  <td style={{ fontSize: 13 }}>{r.serviceName}</td>
+                  <td style={{ fontSize: 16, fontWeight: 900, color: '#F2A900' }}>{G(r.price)}</td>
+                  <td>
+                    <button className="btn btn-gold" style={{ fontSize: 11, padding: '8px 14px' }} onClick={() => payUnpaidReservation(r.id, 'cash')}>
+                      💵 Terima Bayar Tunai (LUNAS)
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* ═══ TAB: RIWAYAT TRANSAKSI ═════════════════════════════════════ */}
       {tab === 'history' && (
         <div>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:14, marginBottom:24 }}>
@@ -217,7 +292,7 @@ export const KasirPOS = () => {
           <div className="card" style={{ overflow:'hidden' }}>
             <table className="data-table">
               <thead>
-                <tr><th>#</th><th>Pelanggan</th><th>Item</th><th>Total</th><th>Metode</th><th>Waktu</th></tr>
+                <tr><th>ID Invoice</th><th>Pelanggan</th><th>Detail / Channel</th><th>Total</th><th>Metode</th><th>Waktu</th></tr>
               </thead>
               <tbody>
                 {txToday.length === 0 && (
@@ -225,12 +300,12 @@ export const KasirPOS = () => {
                 )}
                 {txToday.map(t => (
                   <tr key={t.id}>
-                    <td className="mono" style={{ fontSize:11, color:'#5C5C70' }}>{t.id.slice(-6)}</td>
-                    <td style={{ fontWeight:700 }}>{t.customerName || 'Walk-In'}</td>
-                    <td style={{ fontSize:12, color:'#A0A0B0' }}>{t.items?.map(i=>i.name).join(', ').substring(0,40) || t.serviceName || '–'}</td>
-                    <td style={{ fontWeight:800, color:'#F2A900' }}>{G(t.total)}</td>
-                    <td><span className="badge badge-gold">{t.method || 'qris'}</span></td>
-                    <td className="mono" style={{ fontSize:11, color:'#5C5C70' }}>{t.time || '20:00'}</td>
+                    <td className="mono" style={{ fontSize:11, color:'#5C5C70' }}>{t.id}</td>
+                    <td style={{ fontWeight:700 }}>{t.customer || t.customerName || 'Walk-In'}</td>
+                    <td style={{ fontSize:12, color:'#A0A0B0' }}>{Array.isArray(t.items) ? t.items.join(', ') : t.channel}</td>
+                    <td style={{ fontWeight:800, color:'#F2A900' }}>{G(t.amount || t.total)}</td>
+                    <td><span className="badge badge-gold">{(t.method || 'qris').toUpperCase()}</span></td>
+                    <td className="mono" style={{ fontSize:11, color:'#5C5C70' }}>{t.date || t.time || 'WIB'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -253,16 +328,16 @@ export const KasirPOS = () => {
               <div style={{ fontSize:11, color:'#5C5C70' }}>{new Date().toLocaleString('id-ID')}</div>
             </div>
             <div style={{ marginBottom:16 }}>
-              {receipt.items?.map(i => (
-                <div key={i.id} style={{ display:'flex', justifyContent:'space-between', fontSize:12, marginBottom:7, color:'#A0A0B0' }}>
-                  <span>{i.name} × {i.qty}</span>
-                  <span>{G(i.price * i.qty)}</span>
+              {receipt.items?.map((i, idx) => (
+                <div key={idx} style={{ display:'flex', justifyContent:'space-between', fontSize:12, marginBottom:7, color:'#A0A0B0' }}>
+                  <span>{typeof i === 'string' ? i : `${i.name} × ${i.qty}`}</span>
+                  <span>{typeof i === 'string' ? '' : G(i.price * i.qty)}</span>
                 </div>
               ))}
               <div style={{ height:1, background:'#28282F', margin:'12px 0' }} />
               <div style={{ display:'flex', justifyContent:'space-between', fontWeight:900, fontSize:15 }}>
                 <span style={{ color:'#A0A0B0' }}>TOTAL</span>
-                <span style={{ color:'#F2A900' }}>{G(receipt.total)}</span>
+                <span style={{ color:'#F2A900' }}>{G(receipt.amount || receipt.total)}</span>
               </div>
               <div style={{ display:'flex', justifyContent:'space-between', fontSize:12, color:'#5C5C70', marginTop:6 }}>
                 <span>Metode</span><span style={{ textTransform:'uppercase' }}>{receipt.method}</span>

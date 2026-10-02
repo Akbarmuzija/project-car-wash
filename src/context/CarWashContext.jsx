@@ -305,10 +305,21 @@ export const CarWashProvider = ({ children }) => {
     showToast(`Check-In berhasil! Pelanggan dipersilakan masuk.`, 'success');
   };
 
+  /** Check-out (Selesai) a reservation by ID */
+  const checkOutCustomer = (reservationId) => {
+    setReservations(prev => prev.map(r =>
+      r.id === reservationId ? { ...r, status: 'completed' } : r
+    ));
+    showToast(`Check-Out (Selesai) berhasil! Layanan telah diselesaikan.`, 'success');
+  };
+
   /** Register a walk-in customer */
   const walkInCustomer = (data) => {
     const qNum = reservations.length + 1;
     const code = `WALK-${newDateStr2()}-${String(qNum).padStart(2,'0')}`;
+    const isQrisPaid = data.paymentMethod === 'qris';
+    const payStatus = isQrisPaid ? 'paid' : 'unpaid';
+
     const newRes = {
       id: reservations.length + 1,
       bookingCode: code,
@@ -317,7 +328,6 @@ export const CarWashProvider = ({ children }) => {
       vehicle: data.vehicle,
       plate: data.plate,
       serviceId: data.service,
-      // Use serviceName from caller (includes variant label) or fallback
       serviceName: data.serviceName
         ?? (data.service === 'fast_clean' ? 'Fast Clean Express' : 'Premium Clean & Detailing'),
       variantId: data.variant ?? 'medium',
@@ -325,15 +335,96 @@ export const CarWashProvider = ({ children }) => {
         ?? (data.service === 'fast_clean' ? 85000 : 275000),
       queueNumber: qNum,
       status: 'checked_in',
-      paymentStatus: 'pending',
-      paymentMethod: 'pos',
+      paymentStatus: payStatus,
+      paymentMethod: data.paymentMethod || 'cash',
       branchId: selectedBranch,
       type: 'walkin',
       qrCodeUrl: `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${code}`,
     };
+
     setReservations(prev => [...prev, newRes]);
+
+    // If paid via QRIS directly at Welcomer, record financial transaction for POS & Owner!
+    if (isQrisPaid) {
+      const newTx = {
+        id: `INV-${newDateStr2()}-${String(transactions.length + 1).padStart(3, '0')}`,
+        date: new Date().toLocaleString('id-ID'),
+        customer: data.name,
+        cashier: 'Welcomer QRIS Engine',
+        channel: 'welcomer_qris',
+        amount: newRes.price,
+        method: 'qris',
+        status: 'success',
+        branch: selectedBranch,
+        items: [`${newRes.serviceName} (Rp ${newRes.price.toLocaleString('id-ID')})`]
+      };
+      setTransactions(prev => [newTx, ...prev]);
+    }
+
+    deductOperationalMaterials(data.service);
+
     showToast(`Walk-In terdaftar! No. Antrean #${qNum} — ${newRes.serviceName}`, 'success');
     return newRes;
+  };
+
+  /** Process cash payment for an unpaid reservation at Kasir POS */
+  const payUnpaidReservation = (reservationId, method = 'cash') => {
+    let target = null;
+    setReservations(prev => prev.map(r => {
+      if (r.id === reservationId) {
+        target = { ...r, paymentStatus: 'paid', paymentMethod: method };
+        return target;
+      }
+      return r;
+    }));
+
+    if (target) {
+      const newTx = {
+        id: `INV-${newDateStr2()}-${String(transactions.length + 1).padStart(3, '0')}`,
+        date: new Date().toLocaleString('id-ID'),
+        customer: target.customerName,
+        cashier: 'Kasir Front Office',
+        channel: 'pos_cashier',
+        amount: target.price,
+        method: method,
+        status: 'success',
+        branch: selectedBranch,
+        items: [`${target.serviceName} (${target.bookingCode})`]
+      };
+      setTransactions(prev => [newTx, ...prev]);
+      showToast(`Pembayaran #${target.bookingCode} sebesar Rp ${target.price.toLocaleString('id-ID')} LUNAS di Kasir POS!`, 'success');
+    }
+  };
+
+  /** Store / Inventory CRUD Operations */
+  const addProduct = (itemData) => {
+    const newProduct = {
+      id: inventory.length + 1,
+      sku: itemData.sku || `RET-PROD-${String(inventory.length + 1).padStart(2,'0')}`,
+      name: itemData.name,
+      category: itemData.category || 'autocare',
+      price: parseFloat(itemData.price) || 0,
+      cost: parseFloat(itemData.cost) || 0,
+      stock: parseInt(itemData.stock) || 0,
+      minStock: 5,
+      minAlert: 5,
+      unit: itemData.unit || 'Pcs',
+    };
+    setInventory(prev => [...prev, newProduct]);
+    showToast(`Produk Store "${newProduct.name}" berhasil ditambahkan!`, 'success');
+    return newProduct;
+  };
+
+  const updateProduct = (productId, updatedData) => {
+    setInventory(prev => prev.map(item =>
+      item.id === productId ? { ...item, ...updatedData } : item
+    ));
+    showToast(`Produk Store berhasil diperbarui!`, 'success');
+  };
+
+  const deleteProduct = (productId) => {
+    setInventory(prev => prev.filter(item => item.id !== productId));
+    showToast(`Produk Store berhasil dihapus.`, 'warning');
   };
 
   /** Process a POS payment — alias for addPosTransaction */
@@ -403,7 +494,12 @@ export const CarWashProvider = ({ children }) => {
       showToast,
       // ── aliases for redesigned components ──
       checkInCustomer,
+      checkOutCustomer,
       walkInCustomer,
+      payUnpaidReservation,
+      addProduct,
+      updateProduct,
+      deleteProduct,
       processPayment,
       updateInventory,
     }}>
