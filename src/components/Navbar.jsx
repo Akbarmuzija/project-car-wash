@@ -55,55 +55,59 @@ export const Navbar = () => {
             </div>
           </div>
 
-          {/* 2 Main Navigation Links: Portal Pelanggan vs Login 1 Pintu Staff */}
-          <div style={{
-            display:'flex', alignItems:'center', gap: 4,
-            background: '#141417', border: '1px solid #28282F',
-            borderRadius: 12, padding: 4,
-          }}>
-            {/* Link 1: Pelanggan */}
-            <button
-              onClick={() => setActiveRole('pelanggan')}
+          {/* 2 Separate Navigation Links */}
+          <nav style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+            {/* Link 1: Portal Pelanggan */}
+            <a
+              href="#pelanggan"
+              onClick={(e) => {
+                e.preventDefault();
+                setActiveRole('pelanggan');
+              }}
               style={{
-                display:'flex', alignItems:'center', gap: 8,
-                padding: '8px 18px', borderRadius: 8,
-                border: 'none', cursor: 'pointer',
-                fontSize: 13, fontWeight: !isStaffActive ? 700 : 500,
-                whiteSpace: 'nowrap',
-                transition: 'all .15s',
-                background: !isStaffActive ? 'linear-gradient(135deg, #F2A900, #C98B00)' : 'transparent',
-                color: !isStaffActive ? '#0D0D0F' : '#A0A0B0',
-                boxShadow: !isStaffActive ? '0 2px 10px rgba(242,169,0,.3)' : 'none',
+                display: 'flex', alignItems: 'center', gap: 8,
+                fontSize: 14, fontWeight: !isStaffActive ? 700 : 500,
+                color: !isStaffActive ? '#F2A900' : '#A0A0B0',
+                textDecoration: 'none',
+                padding: '6px 12px',
+                borderRadius: 6,
+                borderBottom: !isStaffActive ? '2px solid #F2A900' : '2px solid transparent',
+                transition: 'all .2s',
+                background: !isStaffActive ? 'rgba(242,169,0,.08)' : 'transparent',
               }}>
-              <span style={{ fontSize: 14 }}>👤</span>
+              <span style={{ fontSize: 16 }}>👤</span>
               <span>Portal Pelanggan</span>
-            </button>
+            </a>
 
-            {/* Link 2: Login 1 Pintu Staff & Owner */}
-            <button
-              onClick={handleStaffClick}
+            {/* Link 2: Login 1 Pintu Staff */}
+            <a
+              href="#staff-login"
+              onClick={(e) => {
+                e.preventDefault();
+                handleStaffClick();
+              }}
               style={{
-                display:'flex', alignItems:'center', gap: 8,
-                padding: '8px 18px', borderRadius: 8,
-                border: 'none', cursor: 'pointer',
-                fontSize: 13, fontWeight: isStaffActive ? 700 : 500,
-                whiteSpace: 'nowrap',
-                transition: 'all .15s',
-                background: isStaffActive ? 'linear-gradient(135deg, #F2A900, #C98B00)' : 'transparent',
-                color: isStaffActive ? '#0D0D0F' : '#A0A0B0',
-                boxShadow: isStaffActive ? '0 2px 10px rgba(242,169,0,.3)' : 'none',
+                display: 'flex', alignItems: 'center', gap: 8,
+                fontSize: 14, fontWeight: isStaffActive ? 700 : 500,
+                color: isStaffActive ? '#F2A900' : '#A0A0B0',
+                textDecoration: 'none',
+                padding: '6px 12px',
+                borderRadius: 6,
+                borderBottom: isStaffActive ? '2px solid #F2A900' : '2px solid transparent',
+                transition: 'all .2s',
+                background: isStaffActive ? 'rgba(242,169,0,.08)' : 'transparent',
               }}>
-              <span style={{ fontSize: 14 }}>🔑</span>
+              <span style={{ fontSize: 16 }}>🔑</span>
               <span>Login 1 Pintu Staff</span>
               {authenticatedStaffRole && (
                 <span style={{
                   width: 7, height: 7, borderRadius: '50%',
-                  background: isStaffActive ? '#0D0D0F' : '#0EC278',
-                  boxShadow: isStaffActive ? 'none' : '0 0 6px #0EC278',
+                  background: '#0EC278',
+                  boxShadow: '0 0 6px #0EC278',
                 }} title="Sesi Staff Aktif" />
               )}
-            </button>
-          </div>
+            </a>
+          </nav>
 
           {/* Branch selector */}
           <div style={{
