@@ -150,12 +150,15 @@ export const KasirPOS = () => {
                       <div style={{ fontSize:12, fontWeight:700 }}>{c.name}</div>
                       <div style={{ fontSize:11, color:'#5C5C70' }}>{G(c.price)}</div>
                     </div>
-                    <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+                    <div style={{ display:'flex', alignItems:'center', gap:5 }}>
                       <button onClick={() => updateQty(c.id, c.qty-1)} style={{ width:22, height:22, borderRadius:5, background:'#28282F', border:'none', cursor:'pointer', color:'#fff', fontWeight:700, fontSize:14, display:'flex', alignItems:'center', justifyContent:'center' }}>−</button>
-                      <span style={{ fontSize:12, fontWeight:700, minWidth:18, textAlign:'center' }}>{c.qty}</span>
+                      <span style={{ fontSize:12, fontWeight:700, minWidth:16, textAlign:'center' }}>{c.qty}</span>
                       <button onClick={() => updateQty(c.id, c.qty+1)} style={{ width:22, height:22, borderRadius:5, background:'#28282F', border:'none', cursor:'pointer', color:'#fff', fontWeight:700, fontSize:14, display:'flex', alignItems:'center', justifyContent:'center' }}>+</button>
                     </div>
-                    <span style={{ fontSize:13, fontWeight:800, color:'#F2A900', minWidth:80, textAlign:'right' }}>{G(c.price*c.qty)}</span>
+                    <span style={{ fontSize:12.5, fontWeight:800, color:'#F2A900', minWidth:65, textAlign:'right' }}>{G(c.price*c.qty)}</span>
+                    <button onClick={() => removeItem(c.id)} style={{ background:'transparent', border:'none', cursor:'pointer', fontSize:14, padding:'2px' }} title="Hapus Barang">
+                      🗑️
+                    </button>
                   </div>
                 ))}
               </div>
