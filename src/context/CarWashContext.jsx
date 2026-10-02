@@ -69,6 +69,7 @@ export const initialTransactions = [
   { id: 'INV-20260930-005', date: '2026-09-30 18:15', customer: 'Dhani Pratama', cashier: 'Kasir - Rian', channel: 'pos_cashier', amount: 250000, method: 'credit_card', status: 'success', branch: 'bsd_city', items: ['Premium Clean (Rp 250.000)'] }
 ];
 
+export const CarWashProvider = ({ children }) => {
   const [activeRole, setActiveRole] = useState('pelanggan'); // 'pelanggan' | 'welcomer' | 'kasir' | 'inventori' | 'owner'
   const [selectedBranch, setSelectedBranch] = useState('senopati');
   const [members, setMembers] = useState(initialMembers);
