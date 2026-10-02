@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useCarWash } from '../context/CarWashContext';
 
-const NAV_ROLES = [
-  { id: 'pelanggan',  label: 'Pelanggan',      icon: '👤' },
-  { id: 'welcomer',   label: 'Welcomer',        icon: '🖥️' },
-  { id: 'kasir',      label: 'Kasir POS',       icon: '💳' },
-  { id: 'inventori',  label: 'Inventori',       icon: '📦' },
-  { id: 'owner',      label: 'Owner Dashboard', icon: '📊' },
-];
-
 export const Navbar = () => {
   const { activeRole, setActiveRole, selectedBranch, setSelectedBranch, notification, authUsers } = useCarWash();
   const [time, setTime] = useState('');
@@ -19,6 +11,14 @@ export const Navbar = () => {
     const t = setInterval(tick, 1000);
     return () => clearInterval(t);
   }, []);
+
+  const isStaffActive = activeRole !== 'pelanggan';
+  const authenticatedStaffRole = Object.keys(authUsers).find(r => r !== 'pelanggan' && !!authUsers[r]);
+
+  const handleStaffClick = () => {
+    if (isStaffActive) return;
+    setActiveRole(authenticatedStaffRole || 'welcomer');
+  };
 
   return (
     <header style={{
@@ -31,7 +31,7 @@ export const Navbar = () => {
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 20px' }}>
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', height: 60, gap: 16 }}>
           {/* Brand */}
-          <div style={{ display:'flex', alignItems:'center', gap: 12, flexShrink: 0 }}>
+          <div style={{ display:'flex', alignItems:'center', gap: 12, flexShrink: 0, cursor: 'pointer' }} onClick={() => setActiveRole('pelanggan')}>
             <div style={{
               width: 38, height: 38, borderRadius: 10,
               background: 'linear-gradient(135deg, #F2A900, #C98B00)',
@@ -55,41 +55,54 @@ export const Navbar = () => {
             </div>
           </div>
 
-          {/* Center nav pills */}
+          {/* 2 Main Navigation Links: Portal Pelanggan vs Login 1 Pintu Staff */}
           <div style={{
-            display:'flex', alignItems:'center', gap: 3,
+            display:'flex', alignItems:'center', gap: 4,
             background: '#141417', border: '1px solid #28282F',
             borderRadius: 12, padding: 4,
-            overflowX: 'auto',
           }}>
-            {NAV_ROLES.map(r => {
-              const active = activeRole === r.id;
-              const isAuth = !!authUsers[r.id];
-              return (
-                <button key={r.id} onClick={() => setActiveRole(r.id)}
-                  style={{
-                    display:'flex', alignItems:'center', gap: 6,
-                    padding: '7px 14px', borderRadius: 8,
-                    border: 'none', cursor: 'pointer',
-                    fontSize: 12.5, fontWeight: active ? 700 : 500,
-                    whiteSpace: 'nowrap',
-                    transition: 'all .15s',
-                    background: active ? 'linear-gradient(135deg, #F2A900, #C98B00)' : 'transparent',
-                    color: active ? '#0D0D0F' : '#A0A0B0',
-                    boxShadow: active ? '0 2px 10px rgba(242,169,0,.3)' : 'none',
-                  }}>
-                  <span style={{ fontSize: 13 }}>{r.icon}</span>
-                  <span>{r.label}</span>
-                  {isAuth && (
-                    <span style={{
-                      width: 6, height: 6, borderRadius: '50%',
-                      background: active ? '#0D0D0F' : '#0EC278',
-                      boxShadow: active ? 'none' : '0 0 6px #0EC278',
-                    }} title="Sesi Login Aktif" />
-                  )}
-                </button>
-              );
-            })}
+            {/* Link 1: Pelanggan */}
+            <button
+              onClick={() => setActiveRole('pelanggan')}
+              style={{
+                display:'flex', alignItems:'center', gap: 8,
+                padding: '8px 18px', borderRadius: 8,
+                border: 'none', cursor: 'pointer',
+                fontSize: 13, fontWeight: !isStaffActive ? 700 : 500,
+                whiteSpace: 'nowrap',
+                transition: 'all .15s',
+                background: !isStaffActive ? 'linear-gradient(135deg, #F2A900, #C98B00)' : 'transparent',
+                color: !isStaffActive ? '#0D0D0F' : '#A0A0B0',
+                boxShadow: !isStaffActive ? '0 2px 10px rgba(242,169,0,.3)' : 'none',
+              }}>
+              <span style={{ fontSize: 14 }}>👤</span>
+              <span>Portal Pelanggan</span>
+            </button>
+
+            {/* Link 2: Login 1 Pintu Staff & Owner */}
+            <button
+              onClick={handleStaffClick}
+              style={{
+                display:'flex', alignItems:'center', gap: 8,
+                padding: '8px 18px', borderRadius: 8,
+                border: 'none', cursor: 'pointer',
+                fontSize: 13, fontWeight: isStaffActive ? 700 : 500,
+                whiteSpace: 'nowrap',
+                transition: 'all .15s',
+                background: isStaffActive ? 'linear-gradient(135deg, #F2A900, #C98B00)' : 'transparent',
+                color: isStaffActive ? '#0D0D0F' : '#A0A0B0',
+                boxShadow: isStaffActive ? '0 2px 10px rgba(242,169,0,.3)' : 'none',
+              }}>
+              <span style={{ fontSize: 14 }}>🔑</span>
+              <span>Login 1 Pintu Staff</span>
+              {authenticatedStaffRole && (
+                <span style={{
+                  width: 7, height: 7, borderRadius: '50%',
+                  background: isStaffActive ? '#0D0D0F' : '#0EC278',
+                  boxShadow: isStaffActive ? 'none' : '0 0 6px #0EC278',
+                }} title="Sesi Staff Aktif" />
+              )}
+            </button>
           </div>
 
           {/* Branch selector */}

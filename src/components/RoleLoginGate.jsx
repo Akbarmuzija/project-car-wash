@@ -91,16 +91,55 @@ export const RoleLoginGate = ({ role, children }) => {
         <div style={{
           background: '#141417', borderBottom: '1px solid #28282F',
           padding: '10px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          maxWidth: 1280, margin: '0 auto',
+          maxWidth: 1280, margin: '0 auto', flexWrap: 'wrap', gap: 12
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <span style={{ fontSize: 18 }}>{meta.icon}</span>
             <span style={{ fontSize: 13, fontWeight: 800, color: '#fff' }}>{meta.title}</span>
             <span className="badge badge-gold" style={{ fontSize: 10 }}>✓ Terautentikasi</span>
           </div>
+
+          {/* Internal Staff Role Navigation Tabs */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 4,
+            background: '#0D0D0F', border: '1px solid #28282F',
+            borderRadius: 8, padding: 3
+          }}>
+            {INTERNAL_ROLES.map(r => {
+              const isRoleActive = role === r.id;
+              const isAuth = !!authUsers[r.id];
+              return (
+                <button
+                  key={r.id}
+                  onClick={() => setActiveRole(r.id)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 6,
+                    padding: '5px 11px', borderRadius: 6,
+                    border: 'none', cursor: 'pointer',
+                    fontSize: 11.5, fontWeight: isRoleActive ? 700 : 500,
+                    background: isRoleActive ? r.color : 'transparent',
+                    color: isRoleActive ? '#0D0D0F' : '#A0A0B0',
+                    transition: 'all .15s',
+                  }}
+                  title={isAuth ? `Sesi Login Aktif (${r.title})` : `Pindah ke Portal ${r.title}`}
+                >
+                  <span>{r.icon}</span>
+                  <span>{r.id.toUpperCase()}</span>
+                  {isAuth && (
+                    <span style={{
+                      width: 5, height: 5, borderRadius: '50%',
+                      background: isRoleActive ? '#0D0D0F' : '#0EC278',
+                      boxShadow: isRoleActive ? 'none' : '0 0 5px #0EC278'
+                    }} />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
             <div style={{ fontSize: 12, color: '#A0A0B0' }}>
-              Sesi Login: <strong style={{ color: meta.color }}>{currentUser.name}</strong>
+              Sesi: <strong style={{ color: meta.color }}>{currentUser.name}</strong>
             </div>
             <button className="btn btn-ghost" style={{ fontSize: 11, padding: '4px 10px', color: '#F04F4F', border: '1px solid rgba(240,79,79,.3)' }} onClick={() => logoutUser(role)}>
               🚪 Logout Sesi
