@@ -69,6 +69,13 @@ export const initialTransactions = [
   { id: 'INV-20260930-005', date: '2026-09-30 18:15', customer: 'Dhani Pratama', cashier: 'Kasir - Rian', channel: 'pos_cashier', amount: 250000, method: 'credit_card', status: 'success', branch: 'bsd_city', items: ['Premium Clean (Rp 250.000)'] }
 ];
 
+export const initialStaffList = [
+  { id: 1, name: 'Kasir Rian', username: 'kasir.rian', role: 'kasir', branch: 'senopati', status: 'active', createdAt: '2026-01-10' },
+  { id: 2, name: 'Front Officer Welcomer', username: 'welcomer.staff', role: 'welcomer', branch: 'senopati', status: 'active', createdAt: '2026-01-15' },
+  { id: 3, name: 'Staf Inventori Gudang', username: 'inventori.staff', role: 'inventori', branch: 'senopati', status: 'active', createdAt: '2026-02-01' },
+  { id: 4, name: 'Kasir Maya (BSD)', username: 'kasir.maya', role: 'kasir', branch: 'bsd_city', status: 'active', createdAt: '2026-03-01' },
+];
+
 export const CarWashProvider = ({ children }) => {
   const [activeRole, setActiveRole] = useState('pelanggan'); // 'pelanggan' | 'welcomer' | 'kasir' | 'inventori' | 'owner'
   const [selectedBranch, setSelectedBranch] = useState('senopati');
@@ -76,6 +83,7 @@ export const CarWashProvider = ({ children }) => {
   const [inventory, setInventory] = useState(initialInventory);
   const [reservations, setReservations] = useState(initialReservations);
   const [transactions, setTransactions] = useState(initialTransactions);
+  const [staffList, setStaffList] = useState(initialStaffList);
   const [marketplaceOrders, setMarketplaceOrders] = useState([
     { id: 'ORD-8801', user: 'Budi Santoso', phone: '081299887766', total: 185000, items: 'AURA Quick Detailer Spray 500ml (1x)', status: 'ready_for_pickup', date: '2026-09-30 17:00' }
   ]);
@@ -497,6 +505,29 @@ export const CarWashProvider = ({ children }) => {
       authUsers,
       loginUser,
       logoutUser,
+      staffList,
+      addStaffAccount: (staffData) => {
+        const newStaff = {
+          id: Date.now(),
+          name: staffData.name,
+          username: staffData.username.toLowerCase(),
+          role: staffData.role,
+          branch: staffData.branch || 'senopati',
+          status: 'active',
+          createdAt: new Date().toISOString().slice(0, 10),
+        };
+        setStaffList(prev => [newStaff, ...prev]);
+        showToast(`Akun staf baru "${newStaff.name}" (${newStaff.role.toUpperCase()}) berhasil dibuat!`, 'success');
+        return newStaff;
+      },
+      deleteStaffAccount: (id) => {
+        setStaffList(prev => prev.filter(s => s.id !== id));
+        showToast('Akun staf berhasil dihapus dari sistem', 'warning');
+      },
+      toggleStaffStatus: (id) => {
+        setStaffList(prev => prev.map(s => s.id === id ? { ...s, status: s.status === 'active' ? 'inactive' : 'active' } : s));
+        showToast('Status akun staf diperbarui!', 'info');
+      },
       members,
       inventory,
       reservations,

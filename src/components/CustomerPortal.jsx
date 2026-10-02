@@ -7,21 +7,31 @@ const SERVICES = [
   {
     id: 'fast_clean', name: 'Fast Clean Express', emoji: '⚡', accentColor: '#38BDF8',
     duration: '15–20 menit', description: 'Drive-through express bay tanpa turun dari mobil', hasDocs: false,
-    features: ['Touchless foam wash & rinse', 'Deep gloss tire dressing', 'Air freshener spray', 'Tidak perlu turun dari mobil'],
+    features: [
+      'Touchless foam wash & rinse',
+      'Deep gloss tire dressing',
+      'Air freshener spray & cuci cepat',
+      '🔒 Video Before & After (Khusus Premium)',
+    ],
     variants: [
-      { id: 'small',  label: 'Small',  sub: 'City car / Hatchback',    price: 65000,  icon: '🚗' },
-      { id: 'medium', label: 'Medium', sub: 'Sedan / SUV standard',     price: 85000,  icon: '🚙' },
-      { id: 'big',    label: 'Big',    sub: 'SUV besar / MPV / Minivan', price: 105000, icon: '🚐' },
+      { id: 'small', label: 'Small', sub: 'City car / Hatchback', price: 65000, icon: '🚗' },
+      { id: 'medium', label: 'Medium', sub: 'Sedan / SUV standard', price: 85000, icon: '🚙' },
+      { id: 'big', label: 'Big', sub: 'SUV besar / MPV / Minivan', price: 105000, icon: '🚐' },
     ],
   },
   {
     id: 'premium_clean', name: 'Premium Clean & Detailing', emoji: '✦', accentColor: '#F2A900',
     duration: '45–60 menit', description: 'Pengalaman detailing eksklusif di Lounge VIP', hasDocs: true,
-    features: ['Akses Lounge VIP + Signature Drink', 'Interior vacuum & ozone sanitasi', 'Ceramic hydrophobic wax coating', 'Video dokumentasi Before & After ✦'],
+    features: [
+      'Akses Lounge VIP + Signature Drink',
+      'Interior vacuum & ozone sanitasi',
+      'Ceramic hydrophobic wax coating',
+      '✦ Video Dokumentasi Before & After [INCLUDED]',
+    ],
     variants: [
-      { id: 'small',  label: 'Small',  sub: 'City car / Hatchback',    price: 200000, icon: '🚗' },
-      { id: 'medium', label: 'Medium', sub: 'Sedan / SUV standard',     price: 275000, icon: '🚙' },
-      { id: 'big',    label: 'Big',    sub: 'SUV besar / MPV / Minivan', price: 350000, icon: '🚐' },
+      { id: 'small', label: 'Small', sub: 'City car / Hatchback', price: 200000, icon: '🚗' },
+      { id: 'medium', label: 'Medium', sub: 'Sedan / SUV standard', price: 275000, icon: '🚙' },
+      { id: 'big', label: 'Big', sub: 'SUV besar / MPV / Minivan', price: 350000, icon: '🚐' },
     ],
   },
 ];
@@ -35,21 +45,21 @@ const STATUS_COLORS = {
 
 const TIER_STYLES = {
   'VIP Platinum': { bg: 'linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 40%, #1a0a2e 100%)', accent: '#A855F7', shine: 'rgba(168,85,247,.4)', label: '✦ VIP PLATINUM', textColor: '#E9D5FF' },
-  'VIP Gold':     { bg: 'linear-gradient(135deg, #1a1200 0%, #2a2000 40%, #1a1200 100%)', accent: '#F2A900', shine: 'rgba(242,169,0,.4)',   label: '✦ VIP GOLD',     textColor: '#FEF3C7' },
-  'Silver':       { bg: 'linear-gradient(135deg, #111318 0%, #1d2029 40%, #111318 100%)', accent: '#94A3B8', shine: 'rgba(148,163,184,.3)', label: '◈ SILVER',        textColor: '#CBD5E1' },
+  'VIP Gold': { bg: 'linear-gradient(135deg, #1a1200 0%, #2a2000 40%, #1a1200 100%)', accent: '#F2A900', shine: 'rgba(242,169,0,.4)', label: '✦ VIP GOLD', textColor: '#FEF3C7' },
+  'Silver': { bg: 'linear-gradient(135deg, #111318 0%, #1d2029 40%, #111318 100%)', accent: '#94A3B8', shine: 'rgba(148,163,184,.3)', label: '◈ SILVER', textColor: '#CBD5E1' },
 };
 
 // ──────────────────────────────────────────────────────────────────────────────
 // SIDEBAR NAV CONFIG
 // ──────────────────────────────────────────────────────────────────────────────
 const SIDEBAR_ITEMS = [
-  { id: 'dashboard',   label: 'Dashboard',       icon: '⊞', group: 'main' },
-  { id: 'reservasi',   label: 'Reservasi Online', icon: '📅', group: 'main', parent: 'dashboard' },
-  { id: 'antrean',     label: 'Antrean Aktif',   icon: '🎫', group: 'main', parent: 'dashboard' },
-  { id: 'kendaraan',   label: 'Kendaraan Saya',  icon: '🚗', group: 'main' },
-  { id: 'store',       label: 'Store & Merch',   icon: '🛒', group: 'main' },
-  { id: 'profil',      label: 'Profil Saya',     icon: '👤', group: 'pref' },
-  { id: 'notifikasi',  label: 'Notifikasi',      icon: '🔔', group: 'pref' },
+  { id: 'dashboard', label: 'Dashboard', icon: '⊞', group: 'main' },
+  { id: 'reservasi', label: 'Reservasi Online', icon: '📅', group: 'main', parent: 'dashboard' },
+  { id: 'antrean', label: 'Antrean Aktif', icon: '🎫', group: 'main', parent: 'dashboard' },
+  { id: 'kendaraan', label: 'Kendaraan Saya', icon: '🚗', group: 'main' },
+  { id: 'store', label: 'Store & Merch', icon: '🛒', group: 'main' },
+  { id: 'profil', label: 'Profil Saya', icon: '👤', group: 'pref' },
+  { id: 'notifikasi', label: 'Notifikasi', icon: '🔔', group: 'pref' },
 ];
 
 // ──────────────────────────────────────────────────────────────────────────────
@@ -88,10 +98,10 @@ const MemberCardFull = ({ member }) => {
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${qrData}&bgcolor=ffffff&color=0D0D0F&qzone=2`;
 
   const REWARDS = [
-    { icon: '☕', name: 'Free Signature Coffee', pts: 50  },
+    { icon: '☕', name: 'Free Signature Coffee', pts: 50 },
     { icon: '🎁', name: 'Diskon 15% Fast Clean', pts: 100 },
-    { icon: '✦',  name: 'Free Premium Detailing', pts: 350 },
-    { icon: '👑', name: 'Upgrade ke VIP Gold',   pts: 500 },
+    { icon: '✦', name: 'Free Premium Detailing', pts: 350 },
+    { icon: '👑', name: 'Upgrade ke VIP Gold', pts: 500 },
   ];
 
   return (
@@ -105,64 +115,64 @@ const MemberCardFull = ({ member }) => {
         boxShadow: `0 0 60px ${tier.shine}, 0 24px 48px rgba(0,0,0,.6)`,
         display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
       }}>
-        <div style={{ position:'absolute', top:-60, right:-60, width:200, height:200, borderRadius:'50%', background:`radial-gradient(circle, ${tier.accent}22 0%, transparent 70%)`, pointerEvents:'none' }} />
-        <div style={{ position:'absolute', bottom:-80, left:-40, width:240, height:240, borderRadius:'50%', background:`radial-gradient(circle, ${tier.accent}11 0%, transparent 70%)`, pointerEvents:'none' }} />
+        <div style={{ position: 'absolute', top: -60, right: -60, width: 200, height: 200, borderRadius: '50%', background: `radial-gradient(circle, ${tier.accent}22 0%, transparent 70%)`, pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: -80, left: -40, width: 240, height: 240, borderRadius: '50%', background: `radial-gradient(circle, ${tier.accent}11 0%, transparent 70%)`, pointerEvents: 'none' }} />
 
         {/* TOP */}
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', position:'relative' }}>
-          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-            <div style={{ width:32, height:32, borderRadius:8, background:`linear-gradient(135deg, ${tier.accent}, ${tier.accent}88)`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:16, fontWeight:900, color:'#0D0D0F' }}>A</div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 8, background: `linear-gradient(135deg, ${tier.accent}, ${tier.accent}88)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 900, color: '#0D0D0F' }}>A</div>
             <div>
-              <div style={{ fontWeight:900, fontSize:15, letterSpacing:'.12em', color:'#fff' }}>AURA</div>
-              <div style={{ fontSize:9, letterSpacing:'.2em', color:`${tier.accent}cc`, textTransform:'uppercase' }}>AUTO CARE</div>
+              <div style={{ fontWeight: 900, fontSize: 15, letterSpacing: '.12em', color: '#fff' }}>AURA</div>
+              <div style={{ fontSize: 9, letterSpacing: '.2em', color: `${tier.accent}cc`, textTransform: 'uppercase' }}>AUTO CARE</div>
             </div>
           </div>
-          <div style={{ textAlign:'right' }}>
-            <div style={{ fontSize:10, fontWeight:800, letterSpacing:'.14em', color: tier.accent }}>{tier.label}</div>
-            <div style={{ fontSize:9, color:`${tier.textColor}88`, letterSpacing:'.08em', marginTop:2 }}>MEMBER CARD</div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.14em', color: tier.accent }}>{tier.label}</div>
+            <div style={{ fontSize: 9, color: `${tier.textColor}88`, letterSpacing: '.08em', marginTop: 2 }}>MEMBER CARD</div>
           </div>
         </div>
 
         {/* MIDDLE */}
-        <div style={{ display:'flex', alignItems:'center', gap:16, position:'relative' }}>
-          <div style={{ width:52, height:52, borderRadius:14, background:`linear-gradient(135deg, ${tier.accent}33, ${tier.accent}11)`, border:`1.5px solid ${tier.accent}66`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, fontWeight:900, color: tier.accent }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, position: 'relative' }}>
+          <div style={{ width: 52, height: 52, borderRadius: 14, background: `linear-gradient(135deg, ${tier.accent}33, ${tier.accent}11)`, border: `1.5px solid ${tier.accent}66`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 900, color: tier.accent }}>
             {initials}
           </div>
           <div>
-            <div style={{ fontSize:18, fontWeight:900, letterSpacing:'-.02em', color:'#fff', lineHeight:1.1, marginBottom:4 }}>{member.name}</div>
-            <div style={{ fontSize:11, color:`${tier.textColor}99`, display:'flex', alignItems:'center', gap:6 }}>
+            <div style={{ fontSize: 18, fontWeight: 900, letterSpacing: '-.02em', color: '#fff', lineHeight: 1.1, marginBottom: 4 }}>{member.name}</div>
+            <div style={{ fontSize: 11, color: `${tier.textColor}99`, display: 'flex', alignItems: 'center', gap: 6 }}>
               <span>🚗</span><span>{member.vehicle}</span>
             </div>
-            <div style={{ fontFamily:'monospace', fontSize:11, marginTop:3, color: tier.accent, fontWeight:700 }}>{member.plate}</div>
+            <div style={{ fontFamily: 'monospace', fontSize: 11, marginTop: 3, color: tier.accent, fontWeight: 700 }}>{member.plate}</div>
           </div>
         </div>
 
         {/* BOTTOM */}
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', position:'relative' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', position: 'relative' }}>
           <div>
-            <div style={{ fontSize:9, color:`${tier.textColor}66`, letterSpacing:'.12em', textTransform:'uppercase', marginBottom:2 }}>Member ID</div>
-            <div style={{ fontFamily:'monospace', fontSize:14, fontWeight:800, color:'#fff', letterSpacing:'.1em' }}>{member.memberId ?? 'AUR-0001'}</div>
-            <div style={{ fontSize:9, color:`${tier.textColor}66`, marginTop:4 }}>Bergabung {member.joinDate ?? '2026'}</div>
+            <div style={{ fontSize: 9, color: `${tier.textColor}66`, letterSpacing: '.12em', textTransform: 'uppercase', marginBottom: 2 }}>Member ID</div>
+            <div style={{ fontFamily: 'monospace', fontSize: 14, fontWeight: 800, color: '#fff', letterSpacing: '.1em' }}>{member.memberId ?? 'AUR-0001'}</div>
+            <div style={{ fontSize: 9, color: `${tier.textColor}66`, marginTop: 4 }}>Bergabung {member.joinDate ?? '2026'}</div>
           </div>
-          <div style={{ textAlign:'center' }}>
-            <div style={{ fontSize:9, color:`${tier.textColor}66`, letterSpacing:'.12em', textTransform:'uppercase', marginBottom:2 }}>AURA Points</div>
-            <div style={{ fontSize:28, fontWeight:900, color: tier.accent, lineHeight:1 }}>{member.points}</div>
-            <div style={{ fontSize:9, color:`${tier.textColor}66`, marginTop:1 }}>pts · {member.totalVisits ?? 0} kunjungan</div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 9, color: `${tier.textColor}66`, letterSpacing: '.12em', textTransform: 'uppercase', marginBottom: 2 }}>AURA Points</div>
+            <div style={{ fontSize: 28, fontWeight: 900, color: tier.accent, lineHeight: 1 }}>{member.points}</div>
+            <div style={{ fontSize: 9, color: `${tier.textColor}66`, marginTop: 1 }}>pts · {member.totalVisits ?? 0} kunjungan</div>
           </div>
         </div>
       </div>
 
       {/* QR BLOCK */}
-      <div style={{ background:'#141417', border:'1px solid #28282F', borderRadius:16, padding:'20px 24px', display:'flex', gap:20, alignItems:'center' }}>
-        <div style={{ background:'#fff', borderRadius:12, padding:8, border:`3px solid ${tier.accent}`, boxShadow:`0 0 20px ${tier.shine}`, flexShrink:0 }}>
-          <img src={qrUrl} alt="QR Member" style={{ width:90, height:90, display:'block', borderRadius:6 }} />
+      <div style={{ background: '#141417', border: '1px solid #28282F', borderRadius: 16, padding: '20px 24px', display: 'flex', gap: 20, alignItems: 'center' }}>
+        <div style={{ background: '#fff', borderRadius: 12, padding: 8, border: `3px solid ${tier.accent}`, boxShadow: `0 0 20px ${tier.shine}`, flexShrink: 0 }}>
+          <img src={qrUrl} alt="QR Member" style={{ width: 90, height: 90, display: 'block', borderRadius: 6 }} />
         </div>
-        <div style={{ flex:1 }}>
-          <div style={{ fontSize:12, fontWeight:800, marginBottom:10, color:'#fff' }}>Scan QR di Meja Welcomer</div>
-          {[ { label:'Username', value: member.username ?? member.phone }, { label:'No. HP', value: member.phone }, { label:'Tier', value: member.tier } ].map(r => (
-            <div key={r.label} style={{ display:'flex', justifyContent:'space-between', fontSize:12, marginBottom:5 }}>
-              <span style={{ color:'#5C5C70' }}>{r.label}</span>
-              <span style={{ fontWeight:700, color:'#A0A0B0', fontFamily: r.label==='Username'?'monospace':'inherit' }}>{r.value}</span>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 12, fontWeight: 800, marginBottom: 10, color: '#fff' }}>Scan QR di Meja Welcomer</div>
+          {[{ label: 'Username', value: member.username ?? member.phone }, { label: 'No. HP', value: member.phone }, { label: 'Tier', value: member.tier }].map(r => (
+            <div key={r.label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 5 }}>
+              <span style={{ color: '#5C5C70' }}>{r.label}</span>
+              <span style={{ fontWeight: 700, color: '#A0A0B0', fontFamily: r.label === 'Username' ? 'monospace' : 'inherit' }}>{r.value}</span>
             </div>
           ))}
         </div>
@@ -170,26 +180,26 @@ const MemberCardFull = ({ member }) => {
 
       {/* REDEEM REWARDS */}
       <div>
-        <div style={{ fontSize:14, fontWeight:800, marginBottom:14, display:'flex', alignItems:'center', gap:8 }}>
+        <div style={{ fontSize: 14, fontWeight: 800, marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
           <span>🎁</span> Redeem Reward Points
-          <span style={{ marginLeft:'auto', fontSize:11, color:'#F2A900', fontWeight:700 }}>{member.points} pts tersedia</span>
+          <span style={{ marginLeft: 'auto', fontSize: 11, color: '#F2A900', fontWeight: 700 }}>{member.points} pts tersedia</span>
         </div>
-        <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {REWARDS.map(r => {
             const canRedeem = member.points >= r.pts;
             return (
-              <div key={r.name} style={{ display:'flex', alignItems:'center', justifyContent:'space-between', background:'#0D0D0F', border:'1px solid #28282F', borderRadius:12, padding:'12px 16px' }}>
-                <div style={{ display:'flex', alignItems:'center', gap:12 }}>
-                  <span style={{ fontSize:20 }}>{r.icon}</span>
+              <div key={r.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#0D0D0F', border: '1px solid #28282F', borderRadius: 12, padding: '12px 16px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <span style={{ fontSize: 20 }}>{r.icon}</span>
                   <div>
-                    <div style={{ fontSize:13, fontWeight:700, color:'#fff' }}>{r.name}</div>
-                    <div style={{ fontSize:11, color:'#5C5C70' }}>{r.pts} poin</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>{r.name}</div>
+                    <div style={{ fontSize: 11, color: '#5C5C70' }}>{r.pts} poin</div>
                   </div>
                 </div>
                 <button
                   disabled={!canRedeem}
                   className={canRedeem ? 'btn btn-gold' : 'btn btn-ghost'}
-                  style={{ fontSize:11, padding:'6px 14px', opacity: canRedeem ? 1 : 0.4, cursor: canRedeem ? 'pointer' : 'not-allowed' }}
+                  style={{ fontSize: 11, padding: '6px 14px', opacity: canRedeem ? 1 : 0.4, cursor: canRedeem ? 'pointer' : 'not-allowed' }}
                 >
                   {canRedeem ? 'Redeem' : `Kurang ${r.pts - member.points} pts`}
                 </button>
@@ -199,22 +209,35 @@ const MemberCardFull = ({ member }) => {
         </div>
       </div>
 
-      <button className="btn btn-ghost" style={{ justifyContent:'center', fontSize:11 }} onClick={() => window.print()}>🖨️ Cetak Kartu Member</button>
+      <button className="btn btn-ghost" style={{ justifyContent: 'center', fontSize: 11 }} onClick={() => window.print()}>🖨️ Cetak Kartu Member</button>
     </div>
   );
 };
 
 // ──────────────────────────────────────────────────────────────────────────────
-// PAGE: DASHBOARD
+// DATA CABANG
+// ──────────────────────────────────────────────────────────────────────────────
+const CABANG_LIST = [
+  { id: 1, name: 'Pusat',   status: 'open',   queue: 3 },
+  { id: 2, name: 'Utara',   status: 'closed',  queue: 0 },
+  { id: 3, name: 'Selatan', status: 'closed',  queue: 0 },
+  { id: 4, name: 'Timur',   status: 'open',   queue: 5 },
+  { id: 5, name: 'Barat',   status: 'closed',  queue: 0 },
+];
+
+// ──────────────────────────────────────────────────────────────────────────────
+// PAGE: DASHBOARD (Layout referensi, tema dark tetap)
 // ──────────────────────────────────────────────────────────────────────────────
 const DashboardPage = ({ member, reservations, onNavigate }) => {
   const [visitFilter, setVisitFilter] = useState('week');
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
 
   const myRes = reservations.filter(r => r.phone === member.phone);
   const activeRes = myRes.filter(r => !['completed', 'cancelled'].includes(r.status));
   const completedRes = myRes.filter(r => r.status === 'completed');
+  const todayWashed = 105;
 
-  // Mock visit history chart data
   const chartData = {
     week: [
       { label: 'Sen', value: 0 }, { label: 'Sel', value: 1, highlight: true },
@@ -236,24 +259,116 @@ const DashboardPage = ({ member, reservations, onNavigate }) => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-      {/* STATS SUMMARY */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 }}>
-        {[
-          { icon: '✅', label: 'Total Kunjungan', value: member.totalVisits ?? myRes.length, color: '#0EC278' },
-          { icon: '📅', label: 'Reservasi Aktif', value: activeRes.length, color: '#38BDF8' },
-          { icon: '🌟', label: 'AURA Points', value: `${member.points} pts`, color: '#F2A900' },
-          { icon: '🏅', label: 'Tier Member', value: member.tier, color: '#A855F7' },
-        ].map(stat => (
-          <div key={stat.label} className="card" style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <div style={{ fontSize: 22 }}>{stat.icon}</div>
-            <div style={{ fontSize: 11, color: '#5C5C70', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.04em' }}>{stat.label}</div>
-            <div style={{ fontSize: 22, fontWeight: 900, color: stat.color }}>{stat.value}</div>
-          </div>
-        ))}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+
+      {/* ── WELCOME HEADER ── */}
+      <div>
+        <div style={{ fontSize: 13, color: '#5C5C70', marginBottom: 4, fontWeight: 500 }}>Welcome back,</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <h1 style={{ fontSize: 32, fontWeight: 900, color: '#fff', letterSpacing: '-0.03em', margin: 0 }}>
+            {member.name.split(' ')[0]}
+          </h1>
+          <span style={{ fontSize: 28 }}>👋</span>
+        </div>
       </div>
 
-      {/* GRAFIK KUNJUNGAN */}
+      {/* ── ONE-TAP WASH BANNER ── */}
+      <div style={{
+        background: 'linear-gradient(135deg, #2D1060 0%, #4A1C96 30%, #6D28D9 55%, #92400E 80%, #B45309 100%)',
+        borderRadius: 18,
+        padding: '28px 32px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 20,
+        position: 'relative',
+        overflow: 'hidden',
+        boxShadow: '0 8px 32px rgba(109,40,217,.3)',
+        border: '1px solid rgba(255,255,255,.08)',
+      }}>
+        <div style={{ position: 'absolute', right: -40, top: -40, width: 180, height: 180, borderRadius: '50%', background: 'rgba(255,255,255,.04)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', right: 80, bottom: -60, width: 140, height: 140, borderRadius: '50%', background: 'rgba(255,255,255,.03)', pointerEvents: 'none' }} />
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,.55)', marginBottom: 8 }}>ONE-TAP WASH</div>
+          <div style={{ fontSize: 22, fontWeight: 900, color: '#fff', lineHeight: 1.25, marginBottom: 8, letterSpacing: '-0.02em' }}>
+            Pilih cabang dan bayar<br />di muka sekarang.
+          </div>
+          <div style={{ fontSize: 13, color: 'rgba(255,255,255,.5)', fontWeight: 500 }}>
+            Reservasi online tersedia 24/7 — konfirmasi instan.
+          </div>
+        </div>
+        <button
+          onClick={() => onNavigate('reservasi')}
+          style={{
+            background: 'rgba(255,255,255,.12)',
+            color: '#fff',
+            border: '1.5px solid rgba(255,255,255,.25)',
+            borderRadius: 12,
+            padding: '13px 22px',
+            fontWeight: 800,
+            fontSize: 14,
+            cursor: 'pointer',
+            whiteSpace: 'nowrap',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            flexShrink: 0,
+            backdropFilter: 'blur(8px)',
+            transition: 'all .15s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,.22)'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,.12)'; }}
+        >
+          Bayar & Antre →
+        </button>
+      </div>
+
+      {/* ── QUEUE RIGHT NOW ── */}
+      <div className="card" style={{ padding: '20px 24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18, flexWrap: 'wrap', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#0EC278', display: 'inline-block', boxShadow: '0 0 0 3px rgba(14,194,120,.2)' }} />
+              <span style={{ fontSize: 11, fontWeight: 800, color: '#0EC278', textTransform: 'uppercase', letterSpacing: '.08em' }}>LIVE</span>
+              <span style={{ fontSize: 11, color: '#5C5C70', marginLeft: 2 }}>· {timeStr}</span>
+            </span>
+            <span style={{ fontSize: 15, fontWeight: 800, color: '#fff' }}>Antrean Saat Ini</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ background: '#1A1A1F', color: '#A0A0B0', borderRadius: 20, padding: '4px 12px', fontSize: 11, fontWeight: 700, border: '1px solid #28282F' }}>
+              Hari ini · {todayWashed} dicuci
+            </span>
+            <button onClick={() => onNavigate('antrean')} style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 700, color: '#F2A900' }}>
+              Lihat semua →
+            </button>
+          </div>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10 }}>
+          {CABANG_LIST.map(cabang => (
+            <div key={cabang.id} style={{
+              background: cabang.status === 'open' ? 'linear-gradient(135deg, rgba(14,194,120,.08), rgba(14,194,120,.04))' : '#1A1A1F',
+              border: cabang.status === 'open' ? '1px solid rgba(14,194,120,.25)' : '1px solid #28282F',
+              borderRadius: 10,
+              padding: '12px 14px',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                <span style={{
+                  width: 6, height: 6, borderRadius: '50%',
+                  background: cabang.status === 'open' ? '#0EC278' : '#28282F',
+                  display: 'inline-block', flexShrink: 0,
+                }} />
+                <span style={{ fontSize: 11, fontWeight: 700, color: '#5C5C70', textTransform: 'uppercase', letterSpacing: '.04em' }}>{cabang.name}</span>
+              </div>
+              <div style={{ fontSize: 15, fontWeight: 800, color: cabang.status === 'open' ? '#0EC278' : '#5C5C70' }}>
+                {cabang.status === 'open' ? `${cabang.queue} antri` : 'Tutup'}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+
+      {/* ── GRAFIK KUNJUNGAN ── */}
       <div className="card" style={{ padding: 24 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
           <div>
@@ -276,72 +391,127 @@ const DashboardPage = ({ member, reservations, onNavigate }) => {
         <BarChart data={chartData[visitFilter]} />
       </div>
 
-      {/* RESERVASI TERBARU & ANTREAN AKTIF */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 20 }}>
-
-        {/* Reservasi Online */}
-        <div className="card" style={{ padding: 22 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-            <div style={{ fontWeight: 800, fontSize: 15 }}>📅 Reservasi Online</div>
-            <button className="btn btn-gold" style={{ fontSize: 11, padding: '5px 12px' }} onClick={() => onNavigate('reservasi')}>+ Buat Baru</button>
+      {/* ── ANTREAN AKTIF (Professional Full-Width Layout) ── */}
+      <div className="card" style={{ padding: 24, border: activeRes.length > 0 ? '1px solid rgba(242,169,0,.3)' : '1px solid #28282F' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(242,169,0,.12)', border: '1px solid rgba(242,169,0,.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>
+              🎫
+            </div>
+            <div>
+              <div style={{ fontSize: 16, fontWeight: 900, color: '#fff', display: 'flex', alignItems: 'center', gap: 8 }}>
+                Antrean Aktif Saya
+                {activeRes.length > 0 && <span className="badge badge-gold" style={{ fontSize: 10 }}>{activeRes.length} Aktif</span>}
+              </div>
+              <div style={{ fontSize: 12, color: '#5C5C70', marginTop: 1 }}>Pantau status pengerjaan cuci mobil secara real-time</div>
+            </div>
           </div>
-          {myRes.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '30px 0', color: '#5C5C70', fontSize: 13 }}>
-              <div style={{ fontSize: 32, marginBottom: 8 }}>📅</div>Belum ada reservasi
-            </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {myRes.slice(0, 3).map(r => (
-                <div key={r.id} style={{ background: '#0D0D0F', border: '1px solid #28282F', borderRadius: 12, padding: '12px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 700 }}>{r.serviceName}</div>
-                    <div style={{ fontSize: 11, color: '#5C5C70', marginTop: 2 }}>{r.reservationDate} · {r.reservationTime} WIB</div>
-                    <div style={{ fontSize: 11, fontFamily: 'monospace', color: '#F2A900', marginTop: 2 }}>{r.bookingCode}</div>
-                  </div>
-                  <span style={{
-                    fontSize: 10, fontWeight: 800, padding: '4px 10px', borderRadius: 20,
-                    background: `${STATUS_COLORS[r.status] || '#5C5C70'}22`,
-                    color: STATUS_COLORS[r.status] || '#5C5C70',
-                    border: `1px solid ${STATUS_COLORS[r.status] || '#5C5C70'}44`,
-                    whiteSpace: 'nowrap',
-                  }}>
-                    {r.status.replace(/_/g, ' ').toUpperCase()}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+            <button className="btn btn-gold" style={{ fontSize: 12, padding: '7px 14px' }} onClick={() => onNavigate('reservasi')}>
+              + Buat Reservasi
+            </button>
+            {activeRes.length > 0 && (
+              <button className="btn btn-ghost" style={{ fontSize: 12, padding: '7px 14px' }} onClick={() => onNavigate('antrean')}>
+                Lihat Detail Antrean →
+              </button>
+            )}
+          </div>
         </div>
 
-        {/* Antrean Aktif */}
-        <div className="card" style={{ padding: 22 }}>
-          <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 16 }}>🎫 Antrean Aktif</div>
-          {activeRes.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '30px 0', color: '#5C5C70', fontSize: 13 }}>
-              <div style={{ fontSize: 32, marginBottom: 8 }}>✅</div>Tidak ada antrean aktif saat ini
+        {activeRes.length === 0 ? (
+          <div style={{ background: '#0D0D0F', borderRadius: 14, border: '1px solid #28282F', padding: '32px 20px', textAlign: 'center' }}>
+            <div style={{ fontSize: 36, marginBottom: 8, opacity: 0.8 }}>🚘</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: '#A0A0B0', marginBottom: 4 }}>Tidak Ada Antrean Aktif Saat Ini</div>
+            <div style={{ fontSize: 12, color: '#5C5C70', maxWidth: 420, margin: '0 auto 16px', lineHeight: 1.5 }}>
+              Anda belum memiliki reservasi atau antrean yang sedang berjalan. Klik tombol di bawah untuk membuat reservasi online.
             </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {activeRes.map(r => (
-                <div key={r.id} className="card-gold" style={{ padding: '16px 18px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
-                    <div>
-                      <div style={{ fontSize: 13, fontWeight: 800 }}>{r.serviceName}</div>
-                      <div style={{ fontSize: 11, color: '#A0A0B0', marginTop: 2 }}>Kode: <span style={{ fontFamily: 'monospace', color: '#F2A900' }}>{r.bookingCode}</span></div>
-                    </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: 11, color: '#5C5C70' }}>No. Antrean</div>
-                      <div style={{ fontSize: 28, fontWeight: 900, color: '#F2A900', fontFamily: 'monospace' }}>#{r.queueNumber}</div>
-                    </div>
+            <button className="btn btn-gold" style={{ fontSize: 12, padding: '8px 18px', display: 'inline-flex' }} onClick={() => onNavigate('reservasi')}>
+              📅 Reservasi Online Sekarang
+            </button>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {activeRes.map(r => (
+              <div key={r.id} style={{
+                background: 'linear-gradient(135deg, #18181C 0%, #111114 100%)',
+                border: '1px solid rgba(242,169,0,.25)',
+                borderRadius: 14,
+                padding: '20px 24px',
+                display: 'flex',
+                alignItems: 'center',
+                justify: 'space-between',
+                flexWrap: 'wrap',
+                gap: 20,
+                boxShadow: '0 4px 20px rgba(0,0,0,.4)',
+              }}>
+                {/* Left: Queue number badge & Details */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 20, flex: 1, minWidth: 280 }}>
+                  <div style={{
+                    background: 'linear-gradient(135deg, #F2A900, #C98B00)',
+                    color: '#0D0D0F',
+                    borderRadius: 12,
+                    padding: '12px 18px',
+                    textAlign: 'center',
+                    boxShadow: '0 4px 14px rgba(242,169,0,.3)',
+                    flexShrink: 0,
+                  }}>
+                    <div style={{ fontSize: 9, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '.1em', opacity: 0.85 }}>ANTREAN</div>
+                    <div style={{ fontSize: 26, fontWeight: 900, fontFamily: 'monospace', lineHeight: 1 }}>#{r.queueNumber}</div>
                   </div>
-                  <div style={{ background: '#fff', padding: 6, borderRadius: 8, display: 'inline-block', border: '2px solid #F2A900' }}>
-                    <img src={r.qrCodeUrl || 'https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=AURA'} alt="QR" style={{ width: 70, height: 70, display: 'block', borderRadius: 4 }} />
+                  <div>
+                    <div style={{ fontSize: 16, fontWeight: 900, color: '#fff', marginBottom: 4 }}>{r.serviceName}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: 12, color: '#F2A900', fontFamily: 'monospace', fontWeight: 800, background: 'rgba(242,169,0,.1)', padding: '2px 8px', borderRadius: 6, border: '1px solid rgba(242,169,0,.2)' }}>{r.bookingCode}</span>
+                      <span style={{ fontSize: 12, color: '#5C5C70' }}>•</span>
+                      <span style={{ fontSize: 12, color: '#A0A0B0', fontWeight: 600 }}>🚗 {r.vehicle} ({r.plate})</span>
+                      <span style={{ fontSize: 12, color: '#5C5C70' }}>•</span>
+                      <span style={{ fontSize: 12, color: '#A0A0B0' }}>⏰ {r.reservationTime} WIB</span>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+
+                {/* Right: Status pill & QR CTA */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 6,
+                      background: `${STATUS_COLORS[r.status] || '#F2A900'}18`,
+                      color: STATUS_COLORS[r.status] || '#F2A900',
+                      border: `1px solid ${STATUS_COLORS[r.status] || '#F2A900'}44`,
+                      padding: '6px 14px', borderRadius: 20, fontSize: 11, fontWeight: 800,
+                    }}>
+                      <span style={{ width: 7, height: 7, borderRadius: '50%', background: STATUS_COLORS[r.status] || '#F2A900' }} />
+                      {r.status.replace(/_/g, ' ').toUpperCase()}
+                    </div>
+                    <div style={{ fontSize: 11, color: '#5C5C70', marginTop: 4 }}>
+                      Scan QR di Welcomer
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => onNavigate('antrean')}
+                    title="Klik untuk membuka tiket QR"
+                    style={{
+                      background: '#141417',
+                      border: '1.5px solid rgba(242,169,0,.3)',
+                      borderRadius: 10,
+                      padding: 6,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 8,
+                      transition: 'all .15s',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = '#F2A900'; e.currentTarget.style.transform = 'scale(1.05)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(242,169,0,.3)'; e.currentTarget.style.transform = 'scale(1)'; }}
+                  >
+                    <img src={r.qrCodeUrl || 'https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=AURA'} alt="QR Code" style={{ width: 42, height: 42, borderRadius: 6, background: '#fff', display: 'block' }} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -525,72 +695,272 @@ const ReservasiPage = ({ member }) => {
 // ──────────────────────────────────────────────────────────────────────────────
 const AntreanPage = ({ member, reservations }) => {
   const { triggerLateArrival } = useCarWash();
+  const [activeVideoTab, setActiveVideoTabState] = useState({});
+  
+  const setVideoTab = (targetKey) => {
+    const [resId, tabName] = targetKey.split('_');
+    setActiveVideoTabState(prev => ({ ...prev, [resId]: tabName }));
+  };
+
   const myRes = reservations.filter(r => r.phone === member.phone);
   const activeRes = myRes.filter(r => !['completed', 'cancelled'].includes(r.status));
 
   return (
     <div>
-      <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 900, marginBottom: 4 }}>Antrean Aktif</h2>
-        <p style={{ fontSize: 13, color: '#5C5C70' }}>Status realtime kendaraan Anda di jalur pencucian</p>
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 16 }}>
+        <div>
+          <h2 style={{ fontSize: 24, fontWeight: 900, color: '#fff', margin: '0 0 4px 0' }}>Antrean Aktif</h2>
+          <p style={{ fontSize: 13, color: '#5C5C70', margin: 0 }}>Status real-time kendaraan Anda di jalur pencucian</p>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: '#141417', border: '1px solid #28282F', padding: '8px 16px', borderRadius: 12 }}>
+          <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#0EC278', boxShadow: '0 0 0 3px rgba(14,194,120,.25)' }} />
+          <span style={{ fontSize: 12, fontWeight: 800, color: '#fff' }}>Sistem Antrean Online Live</span>
+        </div>
       </div>
+
       {activeRes.length === 0 ? (
-        <div className="card" style={{ padding: 60, textAlign: 'center' }}>
+        <div className="card" style={{ padding: '60px 20px', textAlign: 'center', maxWidth: 560, margin: '0 auto' }}>
           <div style={{ fontSize: 48, marginBottom: 12 }}>✅</div>
-          <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>Tidak ada antrean aktif</div>
-          <div style={{ fontSize: 13, color: '#5C5C70' }}>Buat reservasi baru di menu Reservasi Online</div>
+          <div style={{ fontSize: 18, fontWeight: 800, color: '#fff', marginBottom: 6 }}>Tidak ada antrean aktif</div>
+          <div style={{ fontSize: 13, color: '#5C5C70', marginBottom: 20 }}>
+            Kendaraan Anda sedang tidak dalam antrean pencucian saat ini.
+          </div>
+          <button className="btn btn-gold" style={{ padding: '10px 20px', fontSize: 13 }} onClick={() => window.location.hash = '#reservasi'}>
+            + Buat Reservasi Online
+          </button>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 720 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
           {activeRes.map(r => (
-            <div key={r.id} className="card-gold" style={{ padding: 28 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
-                <div>
-                  <span className="badge badge-gold" style={{ marginBottom: 6, display: 'inline-block' }}>Tiket Antrean</span>
-                  <h3 style={{ fontSize: 20, fontWeight: 900 }}>{r.serviceName}</h3>
-                  <div style={{ fontSize: 12, color: '#A0A0B0', marginTop: 2 }}>Kode: <strong className="mono" style={{ color: '#F2A900' }}>{r.bookingCode}</strong></div>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: 11, color: '#5C5C70', fontWeight: 700 }}>No. Antrean</div>
-                  <div style={{ fontSize: 40, fontWeight: 900, color: '#F2A900', lineHeight: 1, fontFamily: 'monospace' }}>#{r.queueNumber}</div>
-                </div>
-              </div>
+            <div key={r.id} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 360px', gap: 24, alignItems: 'start' }}>
 
-              {/* Status Steps */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8, marginBottom: 20, background: '#0D0D0F', padding: 16, borderRadius: 12, border: '1px solid #28282F' }}>
-                {[
-                  { key: 'confirmed', label: 'Menunggu', color: '#F2A900' },
-                  { key: 'checked_in', label: 'Proses', color: '#38BDF8' },
-                  { key: 'completed', label: 'Selesai', color: '#0EC278' },
-                ].map((st, idx) => {
-                  const isDone = r.status === st.key || (st.key === 'confirmed' && ['checked_in', 'in_progress', 'completed'].includes(r.status)) || (st.key === 'checked_in' && ['in_progress', 'completed'].includes(r.status));
-                  return (
-                    <div key={st.key} style={{ textAlign: 'center', opacity: isDone ? 1 : 0.4 }}>
-                      <div style={{ width: 28, height: 28, borderRadius: '50%', background: isDone ? st.color : '#28282F', color: isDone ? '#0D0D0F' : '#5C5C70', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 6px', fontSize: 12, fontWeight: 900 }}>
-                        {isDone ? '✓' : idx + 1}
+              {/* LEFT COLUMN: Main Ticket & Timeline */}
+              <div className="card-gold" style={{ padding: 28, display: 'flex', flexDirection: 'column', gap: 24 }}>
+                {/* Header info */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16 }}>
+                  <div>
+                    <span className="badge badge-gold" style={{ fontSize: 10, marginBottom: 8, display: 'inline-block' }}>✦ TIKET ANTREAN AKTIF</span>
+                    <h3 style={{ fontSize: 24, fontWeight: 900, color: '#fff', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>{r.serviceName}</h3>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: 12, color: '#F2A900', fontFamily: 'monospace', fontWeight: 800, background: 'rgba(242,169,0,.15)', padding: '3px 10px', borderRadius: 6, border: '1px solid rgba(242,169,0,.3)' }}>
+                        {r.bookingCode}
+                      </span>
+                      <span style={{ fontSize: 12, color: '#5C5C70' }}>•</span>
+                      <span style={{ fontSize: 12, color: '#A0A0B0', fontWeight: 600 }}>🚗 {r.vehicle} ({r.plate})</span>
+                    </div>
+                  </div>
+
+                  {/* Big Queue Number */}
+                  <div style={{
+                    background: 'linear-gradient(135deg, #F2A900, #C98B00)',
+                    color: '#0D0D0F',
+                    borderRadius: 16,
+                    padding: '14px 24px',
+                    textAlign: 'center',
+                    boxShadow: '0 8px 24px rgba(242,169,0,.35)',
+                  }}>
+                    <div style={{ fontSize: 9, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '.12em', opacity: 0.85 }}>NO. ANTREAN</div>
+                    <div style={{ fontSize: 44, fontWeight: 900, fontFamily: 'monospace', lineHeight: 1, marginTop: 2 }}>#{r.queueNumber}</div>
+                  </div>
+                </div>
+
+                {/* Progress Steps */}
+                <div>
+                  <div style={{ fontSize: 11, fontWeight: 800, color: '#A0A0B0', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 12 }}>
+                    Tahapan Pengerjaan Cuci
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+                    {[
+                      { key: 'confirmed', label: '1. Menunggu Bay', sub: 'Persiapan & antrean', color: '#F2A900' },
+                      { key: 'checked_in', label: '2. Proses Cuci', sub: 'Pencucian & Detailing', color: '#38BDF8' },
+                      { key: 'completed', label: '3. Selesai', sub: 'Siap diambil', color: '#0EC278' },
+                    ].map((st, idx) => {
+                      const isDone = r.status === st.key || (st.key === 'confirmed' && ['checked_in', 'in_progress', 'completed'].includes(r.status)) || (st.key === 'checked_in' && ['in_progress', 'completed'].includes(r.status));
+                      return (
+                        <div key={st.key} style={{
+                          background: isDone ? `${st.color}12` : '#0D0D0F',
+                          border: `1px solid ${isDone ? st.color + '44' : '#28282F'}`,
+                          borderRadius: 12,
+                          padding: 14,
+                          textAlign: 'center',
+                          opacity: isDone ? 1 : 0.45,
+                          transition: 'all .2s',
+                        }}>
+                          <div style={{
+                            width: 30, height: 30, borderRadius: '50%',
+                            background: isDone ? st.color : '#28282F',
+                            color: isDone ? '#0D0D0F' : '#5C5C70',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            margin: '0 auto 8px', fontSize: 13, fontWeight: 900,
+                          }}>
+                            {isDone ? '✓' : idx + 1}
+                          </div>
+                          <div style={{ fontSize: 12, fontWeight: 800, color: isDone ? '#fff' : '#A0A0B0', marginBottom: 2 }}>{st.label}</div>
+                          <div style={{ fontSize: 10, color: '#5C5C70' }}>{st.sub}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Additional Info Box */}
+                <div style={{ background: '#0D0D0F', border: '1px solid #28282F', borderRadius: 12, padding: 16, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14 }}>
+                  <div>
+                    <div style={{ fontSize: 10, color: '#5C5C70', textTransform: 'uppercase', fontWeight: 700 }}>Waktu Jadwal</div>
+                    <div style={{ fontSize: 13, fontWeight: 800, color: '#fff', marginTop: 3 }}>{r.reservationDate}</div>
+                    <div style={{ fontSize: 11, color: '#F2A900', fontWeight: 700 }}>{r.reservationTime} WIB</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 10, color: '#5C5C70', textTransform: 'uppercase', fontWeight: 700 }}>Status Pembayaran</div>
+                    <div style={{ fontSize: 13, fontWeight: 800, color: '#0EC278', marginTop: 3 }}>● LUNAS (QRIS)</div>
+                    <div style={{ fontSize: 11, color: '#5C5C70' }}>Pembayaran terverifikasi</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 10, color: '#5C5C70', textTransform: 'uppercase', fontWeight: 700 }}>Estimasi Pengerjaan</div>
+                    <div style={{ fontSize: 13, fontWeight: 800, color: '#fff', marginTop: 3 }}>15 - 25 Menit</div>
+                    <div style={{ fontSize: 11, color: '#5C5C70' }}>Tergantung antrean bay</div>
+                  </div>
+                </div>
+
+                {/* ── VIDEO DOKUMENTASI BEFORE & AFTER (PREMIUM VS FAST CLEAN) ── */}
+                {(() => {
+                  const isPremium = r.serviceId === 'premium_clean' || r.serviceName?.toLowerCase().includes('premium');
+                  return isPremium ? (
+                    <div style={{ background: '#0D0D0F', border: '1px solid rgba(242,169,0,.3)', borderRadius: 14, padding: 20 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, flexWrap: 'wrap', gap: 10 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                          <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(242,169,0,.18)', border: '1px solid rgba(242,169,0,.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>
+                            🎥
+                          </div>
+                          <div>
+                            <div style={{ fontSize: 14, fontWeight: 900, color: '#fff', display: 'flex', alignItems: 'center', gap: 8 }}>
+                              Dokumentasi Video Before & After
+                              <span className="badge badge-gold" style={{ fontSize: 9 }}>✦ PREMIUM FEATURE</span>
+                            </div>
+                            <div style={{ fontSize: 11, color: '#5C5C70' }}>Live stream pengerjaan detailing VIP Lounge</div>
+                          </div>
+                        </div>
+                        <div style={{ display: 'flex', gap: 8 }}>
+                          <button
+                            onClick={() => setVideoTab(r.id + '_before')}
+                            style={{
+                              padding: '6px 12px', borderRadius: 8, border: '1px solid', cursor: 'pointer', fontSize: 11, fontWeight: 700,
+                              borderColor: (activeVideoTab[r.id] || 'before') === 'before' ? '#F2A900' : '#28282F',
+                              background: (activeVideoTab[r.id] || 'before') === 'before' ? 'rgba(242,169,0,.18)' : '#141417',
+                              color: (activeVideoTab[r.id] || 'before') === 'before' ? '#F2A900' : '#A0A0B0',
+                            }}
+                          >
+                            📹 Sebelum (Before)
+                          </button>
+                          <button
+                            onClick={() => setVideoTab(r.id + '_after')}
+                            style={{
+                              padding: '6px 12px', borderRadius: 8, border: '1px solid', cursor: 'pointer', fontSize: 11, fontWeight: 700,
+                              borderColor: activeVideoTab[r.id] === 'after' ? '#0EC278' : '#28282F',
+                              background: activeVideoTab[r.id] === 'after' ? 'rgba(14,194,120,.18)' : '#141417',
+                              color: activeVideoTab[r.id] === 'after' ? '#0EC278' : '#A0A0B0',
+                            }}
+                          >
+                            ✨ Sesudah (After)
+                          </button>
+                        </div>
                       </div>
-                      <div style={{ fontSize: 11, fontWeight: 700, color: isDone ? st.color : '#A0A0B0' }}>{st.label}</div>
+
+                      <div style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', border: '1px solid #28282F', background: '#000' }}>
+                        <video
+                          controls
+                          key={activeVideoTab[r.id] === 'after' ? 'after' : 'before'}
+                          src={activeVideoTab[r.id] === 'after' ? (r.videoAfterUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4') : (r.videoBeforeUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4')}
+                          style={{ width: '100%', maxHeight: 280, display: 'block', objectFit: 'cover' }}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div style={{ background: '#0D0D0F', border: '1px solid #28282F', borderRadius: 14, padding: 20 }}>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+                        <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(255,255,255,0.04)', border: '1px solid #28282F', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>
+                          🔒
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                            <span style={{ fontSize: 10, fontWeight: 800, color: '#94A3B8', background: '#1E2028', padding: '2px 8px', borderRadius: 6, border: '1px solid #28282F' }}>
+                              DOKUMENTASI DIBATASI (FAST CLEAN)
+                            </span>
+                          </div>
+                          <div style={{ fontSize: 14, fontWeight: 800, color: '#fff' }}>
+                            Video Dokumentasi Before & After Tidak Tersedia
+                          </div>
+                          <div style={{ fontSize: 11.5, color: '#5C5C70', marginTop: 4, lineHeight: 1.5 }}>
+                            Layanan <strong style={{ color: '#38BDF8' }}>Fast Clean Express</strong> difokuskan pada cuci cepat drive-through (15–20 menit) tanpa pengerjaan detailing di lounge. Fitur perekaman Video HD Before & After secara eksklusif hanya tersedia pada paket <strong style={{ color: '#F2A900' }}>Premium Clean & Detailing</strong>.
+                          </div>
+                          <button
+                            onClick={() => window.location.hash = '#reservasi'}
+                            style={{
+                              marginTop: 12, padding: '7px 14px', borderRadius: 8, border: '1px solid rgba(242,169,0,.3)',
+                              background: 'rgba(242,169,0,.1)', color: '#F2A900', fontSize: 11.5, fontWeight: 800, cursor: 'pointer',
+                              display: 'inline-flex', alignItems: 'center', gap: 6,
+                            }}
+                          >
+                            ✦ Upgrade Ke Premium Clean & Detailing →
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   );
-                })}
+                })()}
               </div>
 
-              {/* QR Code */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 20, background: '#0D0D0F', padding: 18, borderRadius: 14, border: '1px solid rgba(242,169,0,.2)', marginBottom: 20 }}>
-                <div style={{ background: '#fff', padding: 8, borderRadius: 10, border: '2px solid #F2A900', flexShrink: 0 }}>
-                  <img src={r.qrCodeUrl || 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=AURA'} alt="QR Code" style={{ width: 90, height: 90, display: 'block' }} />
+              {/* RIGHT COLUMN: Digital Pass QR & Assistance */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                {/* QR Card */}
+                <div className="card" style={{ padding: 24, textAlign: 'center', background: '#141417', border: '1px solid rgba(242,169,0,.3)' }}>
+                  <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: '#F2A900', marginBottom: 12 }}>
+                    DIGITAL PASS QR
+                  </div>
+                  <div style={{
+                    background: '#fff',
+                    borderRadius: 16,
+                    padding: 16,
+                    display: 'inline-block',
+                    marginBottom: 14,
+                    border: '3px solid #F2A900',
+                    boxShadow: '0 0 30px rgba(242,169,0,.2)',
+                  }}>
+                    <img src={r.qrCodeUrl || 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=AURA'} alt="QR Code" style={{ width: 140, height: 140, display: 'block', borderRadius: 6 }} />
+                  </div>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: '#fff', marginBottom: 4 }}>Tunjukkan QR ke Welcomer</div>
+                  <div style={{ fontSize: 11.5, color: '#5C5C70', lineHeight: 1.5, marginBottom: 16 }}>
+                    Petugas bay akan melakukan scan pada kode QR di atas saat kendaraan Anda memasuki area cuci.
+                  </div>
+
+                  <div style={{ height: 1, background: '#28282F', marginBottom: 16 }} />
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <button className="btn btn-ghost" style={{ justifyContent: 'center', width: '100%', fontSize: 12 }} onClick={() => window.print()}>
+                      🖨️ Cetak Tiket Antrean
+                    </button>
+                    <button className="btn btn-danger" style={{ justifyContent: 'center', width: '100%', fontSize: 12 }} onClick={() => triggerLateArrival(r.id)}>
+                      ⏰ Trigger Terlambat Datang
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <div style={{ fontSize: 13, fontWeight: 800, marginBottom: 4 }}>Tunjukkan QR ke Welcomer</div>
-                  <div style={{ fontSize: 12, color: '#A0A0B0' }}>Petugas will scan untuk konfirmasi kedatangan</div>
-                  <div style={{ fontSize: 11, color: '#F2A900', marginTop: 8, fontWeight: 700 }}>Slot: {r.reservationTime} WIB</div>
+
+                {/* VIP Lounge & Help Card */}
+                <div className="card" style={{ padding: 20 }}>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: '#fff', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span>☕</span> Fasilitas Lounge VIP
+                  </div>
+                  <div style={{ fontSize: 11.5, color: '#5C5C70', lineHeight: 1.5, marginBottom: 12 }}>
+                    Silakan menunggu di Lounge VIP kami. Nikmati Free Signature Coffee & High-speed Wi-Fi.
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11, color: '#A0A0B0', background: '#0D0D0F', padding: '8px 12px', borderRadius: 8, border: '1px solid #28282F' }}>
+                    <span>CS WhatsApp</span>
+                    <span style={{ color: '#F2A900', fontWeight: 700 }}>+6281299887766</span>
+                  </div>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: 12, color: '#5C5C70' }}>CS WA: +6281299887766</span>
-                <button className="btn btn-danger" onClick={() => triggerLateArrival(r.id)}>⏰ Trigger Terlambat</button>
-              </div>
             </div>
           ))}
         </div>
@@ -827,11 +1197,34 @@ const ProfilPage = ({ member }) => {
 // ──────────────────────────────────────────────────────────────────────────────
 // PAGE: STORE & MERCHANDISE
 // ──────────────────────────────────────────────────────────────────────────────
-const StorePage = () => {
-  const { inventory, checkoutMarketplace, showToast } = useCarWash();
-  const [cart, setCart] = useState([]);
+const STORE_CATALOGUE = [
+  { id: 101, sku: 'RET-KIT-01', name: 'AURA Quick Detailer Spray 500ml', category: 'autocare', price: 185000, stock: 24, unit: 'Botol', rating: 4.9, reviews: 124, icon: '🧪', desc: 'Formula hydrophobic gloss enhancer untuk kilau instan & perlindungan debu.' },
+  { id: 102, sku: 'RET-APP-02', name: 'AURA Luxury Detailing Hoodie', category: 'merchandise', price: 450000, stock: 12, unit: 'Pcs', rating: 5.0, reviews: 48, icon: '👕', desc: 'Apparel resmi AURA dengan bahan cotton fleece 330 GSM super nyaman.' },
+  { id: 103, sku: 'RET-AIR-03', name: 'AURA Leather & Oud Air Freshener', category: 'aromaterapi', price: 65000, stock: 38, unit: 'Pcs', rating: 4.8, reviews: 210, icon: '🌿', desc: 'Parfum kabin aroma kayu oud & kulit kemewahan khas VIP Lounge.' },
+  { id: 104, sku: 'RET-COAT-04', name: 'Ceramic Quartz Wax Shield 250ml', category: 'autocare', price: 275000, stock: 18, unit: 'Botol', rating: 4.9, reviews: 89, icon: '✦', desc: 'Coating wax sintetis tahan air hujan asam & perlindungan sinar UV 90 hari.' },
+  { id: 105, sku: 'RET-TOWEL-05', name: 'Edgeless Microfiber Towel Set (3 Pcs)', category: 'autocare', price: 120000, stock: 45, unit: 'Set', rating: 4.9, reviews: 340, icon: '🧽', desc: 'Kain microfiber 700 GSM tanpa jahitan pinggir, anti baret cat mobil.' },
+  { id: 106, sku: 'RET-TUMBLER-06', name: 'AURA Thermal Aluminum Tumbler 750ml', category: 'merchandise', price: 210000, stock: 15, unit: 'Pcs', rating: 5.0, reviews: 65, icon: '🥤', desc: 'Tumbler stainless double-wall menahan dingin 24 jam dengan logo AURA.' },
+];
 
-  const products = inventory.filter(i => i.category !== 'operasional');
+const StorePage = () => {
+  const { checkoutMarketplace, showToast } = useCarWash();
+  const [cart, setCart] = useState([]);
+  const [search, setSearch] = useState('');
+  const [selectedCat, setSelectedCat] = useState('all');
+  const [deliveryOption, setDeliveryOption] = useState('pickup');
+
+  const categories = [
+    { id: 'all', label: 'Semua Produk' },
+    { id: 'autocare', label: '🧪 Autocare & Detailing' },
+    { id: 'merchandise', label: '👕 Merchandise & Apparel' },
+    { id: 'aromaterapi', label: '🌿 Aromaterapi Kabin' },
+  ];
+
+  const filteredProducts = STORE_CATALOGUE.filter(p => {
+    const matchCat = selectedCat === 'all' || p.category === selectedCat;
+    const matchSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.sku.toLowerCase().includes(search.toLowerCase());
+    return matchCat && matchSearch;
+  });
 
   const addToCart = (p) => {
     setCart(c => {
@@ -857,76 +1250,236 @@ const StorePage = () => {
 
   return (
     <div>
-      <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 900, marginBottom: 4 }}>Store & Merchandise</h2>
-        <p style={{ fontSize: 13, color: '#5C5C70' }}>Produk perawatan mobil premium & apparel resmi AURA</p>
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, flexWrap: 'wrap', gap: 16 }}>
+        <div>
+          <h2 style={{ fontSize: 24, fontWeight: 900, color: '#fff', margin: '0 0 4px 0' }}>Store & Merchandise</h2>
+          <p style={{ fontSize: 13, color: '#5C5C70', margin: 0 }}>Produk perawatan mobil kelas premium & merchandise eksklusif AURA</p>
+        </div>
+        {/* Search */}
+        <div style={{ position: 'relative', width: 280 }}>
+          <input
+            type="text"
+            placeholder="Cari produk / SKU..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{
+              width: '100%',
+              background: '#141417',
+              border: '1px solid #28282F',
+              borderRadius: 10,
+              padding: '9px 14px 9px 36px',
+              color: '#fff',
+              fontSize: 12.5,
+              outline: 'none',
+            }}
+          />
+          <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#5C5C70', fontSize: 14 }}>🔍</span>
+        </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24, alignItems: 'start' }}>
-        {/* Product Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))', gap: 14 }}>
-          {products.map(p => (
-            <div key={p.id} className="card" style={{ padding: 16, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              <div>
-                <span className="badge badge-gold" style={{ fontSize: 10, marginBottom: 8, display: 'inline-block' }}>{p.category}</span>
-                <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4, lineHeight: 1.3 }}>{p.name}</div>
-                <div style={{ fontFamily: 'monospace', fontSize: 11, color: '#5C5C70', marginBottom: 10 }}>SKU: {p.sku}</div>
-              </div>
-              <div>
-                <div style={{ fontSize: 18, fontWeight: 900, color: '#F2A900', marginBottom: 4 }}>{G(p.price)}</div>
-                <div style={{ fontSize: 11, color: '#5C5C70', marginBottom: 14 }}>Stok: <strong style={{ color: '#A0A0B0' }}>{p.stock} {p.unit}</strong></div>
-                <button className="btn btn-gold" style={{ width: '100%', justifyContent: 'center', fontSize: 12.5 }} onClick={() => addToCart(p)}>
-                  + Tambah ke Keranjang
-                </button>
-              </div>
+      {/* Category Pills */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
+        {categories.map(c => (
+          <button
+            key={c.id}
+            onClick={() => setSelectedCat(c.id)}
+            style={{
+              padding: '7px 16px',
+              borderRadius: 20,
+              border: '1px solid',
+              borderColor: selectedCat === c.id ? '#F2A900' : '#28282F',
+              background: selectedCat === c.id ? 'rgba(242,169,0,.15)' : '#141417',
+              color: selectedCat === c.id ? '#F2A900' : '#A0A0B0',
+              fontSize: 12,
+              fontWeight: 700,
+              cursor: 'pointer',
+              transition: 'all .15s',
+            }}
+          >
+            {c.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Main Grid: Products + Cart Panel */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 360px', gap: 24, alignItems: 'start' }}>
+
+        {/* Product Cards Grid */}
+        <div>
+          {filteredProducts.length === 0 ? (
+            <div className="card" style={{ padding: 48, textAlign: 'center', color: '#5C5C70' }}>
+              <div style={{ fontSize: 36, marginBottom: 8 }}>🔍</div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: '#A0A0B0' }}>Produk Tidak Ditemukan</div>
+              <div style={{ fontSize: 12, color: '#5C5C70', marginTop: 4 }}>Coba kata kunci pencarian atau kategori lain</div>
             </div>
-          ))}
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: 18 }}>
+              {filteredProducts.map(p => (
+                <div key={p.id} className="card" style={{
+                  padding: 20,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justify: 'space-between',
+                  background: '#141417',
+                  border: '1px solid #28282F',
+                  borderRadius: 14,
+                  transition: 'all .2s',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(242,169,0,.35)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = '#28282F'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                >
+                  <div>
+                    {/* Visual Icon Container */}
+                    <div style={{
+                      background: 'linear-gradient(135deg, #1C1C22 0%, #111114 100%)',
+                      border: '1px solid #28282F',
+                      borderRadius: 12,
+                      height: 120,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justify: 'center',
+                      fontSize: 48,
+                      marginBottom: 14,
+                      position: 'relative',
+                    }}>
+                      {p.icon}
+                      <span className="badge badge-gold" style={{ position: 'absolute', top: 10, right: 10, fontSize: 9 }}>
+                        {p.category.toUpperCase()}
+                      </span>
+                    </div>
+
+                    {/* Rating & Title */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#F2A900', marginBottom: 6, fontWeight: 700 }}>
+                      <span>⭐ {p.rating}</span>
+                      <span style={{ color: '#5C5C70' }}>({p.reviews} ulasan)</span>
+                    </div>
+
+                    <div style={{ fontSize: 14, fontWeight: 800, color: '#fff', marginBottom: 4, lineHeight: 1.3 }}>{p.name}</div>
+                    <div style={{ fontSize: 11.5, color: '#5C5C70', marginBottom: 12, lineHeight: 1.4 }}>{p.desc}</div>
+                  </div>
+
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 12, paddingTop: 10, borderTop: '1px solid #28282F' }}>
+                      <div style={{ fontSize: 18, fontWeight: 900, color: '#F2A900' }}>{G(p.price)}</div>
+                      <div style={{ fontSize: 10.5, color: '#0EC278', fontWeight: 700 }}>Stok: {p.stock} {p.unit}</div>
+                    </div>
+
+                    <button
+                      className="btn btn-gold"
+                      style={{ width: '100%', justifyContent: 'center', fontSize: 12.5, padding: '9px 0' }}
+                      onClick={() => addToCart(p)}
+                    >
+                      + Tambah ke Keranjang
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Cart Panel */}
-        <div className="card" style={{ padding: 20 }}>
-          <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 16, paddingBottom: 14, borderBottom: '1px solid #28282F', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span>🛒 Keranjang</span>
+        {/* Cart Panel (Right Sticky) */}
+        <div className="card" style={{ padding: 22, position: 'sticky', top: 80, background: '#141417', border: '1px solid #28282F' }}>
+          <div style={{ fontWeight: 900, fontSize: 16, marginBottom: 16, paddingBottom: 14, borderBottom: '1px solid #28282F', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span>🛒</span> Keranjang Belanja
+            </span>
             {cart.length > 0 && <span className="badge badge-gold">{cart.reduce((s, i) => s + i.qty, 0)} Item</span>}
           </div>
 
           {cart.length > 0 ? (
             <>
-              <div style={{ maxHeight: 320, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16 }}>
+              {/* Item List */}
+              <div style={{ maxHeight: 280, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16, paddingRight: 4 }}>
                 {cart.map(c => (
-                  <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: 12, background: '#0D0D0F', borderRadius: 10, border: '1px solid #28282F' }}>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 12.5, fontWeight: 700, color: '#fff', marginBottom: 2 }}>{c.name}</div>
+                  <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 12, background: '#0D0D0F', borderRadius: 10, border: '1px solid #28282F' }}>
+                    <div style={{ width: 34, height: 34, borderRadius: 8, background: '#1A1A1F', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>
+                      {c.icon}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.name}</div>
                       <div style={{ fontSize: 11, color: '#F2A900', fontWeight: 800 }}>{G(c.price * c.qty)}</div>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <button onClick={() => updateCartQty(c.id, -1)} style={{ width: 24, height: 24, borderRadius: 6, background: '#28282F', border: 'none', cursor: 'pointer', color: '#fff', fontWeight: 700, fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
-                      <span style={{ fontSize: 13, fontWeight: 800, minWidth: 20, textAlign: 'center' }}>{c.qty}</span>
-                      <button onClick={() => updateCartQty(c.id, 1)} style={{ width: 24, height: 24, borderRadius: 6, background: '#28282F', border: 'none', cursor: 'pointer', color: '#fff', fontWeight: 700, fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+                      <button onClick={() => updateCartQty(c.id, -1)} style={{ width: 22, height: 22, borderRadius: 6, background: '#28282F', border: 'none', cursor: 'pointer', color: '#fff', fontWeight: 700, fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
+                      <span style={{ fontSize: 12, fontWeight: 800, minWidth: 16, textAlign: 'center' }}>{c.qty}</span>
+                      <button onClick={() => updateCartQty(c.id, 1)} style={{ width: 22, height: 22, borderRadius: 6, background: '#28282F', border: 'none', cursor: 'pointer', color: '#fff', fontWeight: 700, fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
                     </div>
-                    <button onClick={() => removeFromCart(c.id)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 14, padding: 4 }}>🗑️</button>
+                    <button onClick={() => removeFromCart(c.id)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 13, color: '#5C5C70', padding: 2 }} title="Hapus">✕</button>
                   </div>
                 ))}
               </div>
 
-              <div style={{ height: 1, background: '#28282F', marginBottom: 14 }} />
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 900, marginBottom: 16 }}>
-                <span style={{ color: '#A0A0B0', fontSize: 13 }}>Total Tagihan</span>
-                <span style={{ color: '#F2A900', fontSize: 18 }}>{G(cartTotal)}</span>
+              {/* Delivery / Pick up option */}
+              <div style={{ marginBottom: 16 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: '#5C5C70', textTransform: 'uppercase', marginBottom: 8 }}>Metode Pengambilan</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                  <button
+                    onClick={() => setDeliveryOption('pickup')}
+                    style={{
+                      padding: '8px 10px', borderRadius: 8, border: '1px solid',
+                      borderColor: deliveryOption === 'pickup' ? '#F2A900' : '#28282F',
+                      background: deliveryOption === 'pickup' ? 'rgba(242,169,0,.1)' : '#0D0D0F',
+                      color: deliveryOption === 'pickup' ? '#F2A900' : '#A0A0B0',
+                      fontSize: 11, fontWeight: 700, cursor: 'pointer', textAlign: 'center',
+                    }}
+                  >
+                    🚗 Pick up di Bay
+                  </button>
+                  <button
+                    onClick={() => setDeliveryOption('delivery')}
+                    style={{
+                      padding: '8px 10px', borderRadius: 8, border: '1px solid',
+                      borderColor: deliveryOption === 'delivery' ? '#F2A900' : '#28282F',
+                      background: deliveryOption === 'delivery' ? 'rgba(242,169,0,.1)' : '#0D0D0F',
+                      color: deliveryOption === 'delivery' ? '#F2A900' : '#A0A0B0',
+                      fontSize: 11, fontWeight: 700, cursor: 'pointer', textAlign: 'center',
+                    }}
+                  >
+                    📦 Kirim ke Rumah
+                  </button>
+                </div>
               </div>
+
+              <div style={{ height: 1, background: '#28282F', marginBottom: 14 }} />
+
+              {/* Summary */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 16, fontSize: 12 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#A0A0B0' }}>
+                  <span>Subtotal</span><span>{G(cartTotal)}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#A0A0B0' }}>
+                  <span>Ongkir / Biaya Ambil</span><span style={{ color: '#0EC278', fontWeight: 700 }}>GRATIS</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 900, fontSize: 15, color: '#fff', paddingTop: 8, borderTop: '1px solid #28282F', marginTop: 4 }}>
+                  <span>Total Tagihan</span>
+                  <span style={{ color: '#F2A900' }}>{G(cartTotal)}</span>
+                </div>
+              </div>
+
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <button className="btn btn-gold" style={{ width: '100%', justifyContent: 'center', padding: '12px 0', fontSize: 13.5 }} onClick={() => { checkoutMarketplace(cart, cartTotal); setCart([]); }}>
-                  🛒 Checkout ({G(cartTotal)})
+                <button
+                  className="btn btn-gold"
+                  style={{ width: '100%', justifyContent: 'center', padding: '12px 0', fontSize: 13.5 }}
+                  onClick={() => { checkoutMarketplace(cart, cartTotal); setCart([]); }}
+                >
+                  🛒 Checkout via QRIS ({G(cartTotal)})
                 </button>
-                <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'center', fontSize: 11, color: '#F04F4F' }} onClick={() => setCart([])}>
+                <button
+                  className="btn btn-ghost"
+                  style={{ width: '100%', justifyContent: 'center', fontSize: 11, color: '#F04F4F' }}
+                  onClick={() => setCart([])}
+                >
                   Kosongkan Keranjang
                 </button>
               </div>
             </>
           ) : (
             <div style={{ padding: '40px 0', textAlign: 'center', color: '#5C5C70', fontSize: 13 }}>
-              <div style={{ fontSize: 32, marginBottom: 8 }}>🛒</div>
-              Keranjang Anda kosong.<br />Pilih produk di panel kiri.
+              <div style={{ fontSize: 36, marginBottom: 12 }}>🛒</div>
+              <div style={{ fontWeight: 700, color: '#A0A0B0', marginBottom: 4 }}>Keranjang Anda Kosong</div>
+              <div>Pilih produk perawatan & merchandise resmi AURA di panel sebelah kiri.</div>
             </div>
           )}
         </div>
@@ -956,12 +1509,12 @@ export const CustomerPortal = () => {
 
   const renderPage = () => {
     switch (activePage) {
-      case 'dashboard':  return <DashboardPage member={member} reservations={reservations} onNavigate={setActivePage} />;
-      case 'reservasi':  return <ReservasiPage member={member} />;
-      case 'antrean':    return <AntreanPage member={member} reservations={reservations} />;
-      case 'kendaraan':  return <KendaraanPage member={member} />;
-      case 'store':      return <StorePage />;
-      case 'profil':     return <ProfilPage member={member} />;
+      case 'dashboard': return <DashboardPage member={member} reservations={reservations} onNavigate={setActivePage} />;
+      case 'reservasi': return <ReservasiPage member={member} />;
+      case 'antrean': return <AntreanPage member={member} reservations={reservations} />;
+      case 'kendaraan': return <KendaraanPage member={member} />;
+      case 'store': return <StorePage />;
+      case 'profil': return <ProfilPage member={member} />;
       case 'membercard': return (
         <div style={{ maxWidth: 540, margin: '0 auto' }}>
           <div style={{ marginBottom: 24 }}>
@@ -1012,33 +1565,46 @@ export const CustomerPortal = () => {
   return (
     <div style={{ display: 'flex', minHeight: 'calc(100vh - 60px)', background: '#0D0D0F' }}>
 
-      {/* ── SIDEBAR ──────────────────────────────────────────────────────── */}
+      {/* ── SIDEBAR ── */}
       <aside style={{
         width: SIDEBAR_W, minHeight: '100%',
         background: '#141417',
         borderRight: '1px solid #28282F',
         display: 'flex', flexDirection: 'column',
-        transition: 'width .2s ease',
+        transition: 'width .22s ease',
         flexShrink: 0, overflow: 'hidden',
         position: 'sticky', top: 60, height: 'calc(100vh - 60px)',
       }}>
-        {/* Sidebar Header */}
-        <div style={{ padding: '16px 12px', borderBottom: '1px solid #28282F', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        {/* Brand Header */}
+        <div style={{ padding: sidebarExpanded ? '18px 16px 14px' : '18px 10px 14px', borderBottom: '1px solid #28282F', display: 'flex', alignItems: 'center', justifyContent: sidebarExpanded ? 'space-between' : 'center' }}>
           {sidebarExpanded && (
-            <div style={{ fontSize: 11, fontWeight: 800, color: '#5C5C70', textTransform: 'uppercase', letterSpacing: '.06em' }}>Main Menu</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{
+                width: 30, height: 30, borderRadius: 8,
+                background: 'linear-gradient(135deg, #F2A900, #C98B00)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 15, flexShrink: 0,
+              }}>🚗</div>
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 900, color: '#fff', letterSpacing: '-.01em' }}>AURA</div>
+                <div style={{ fontSize: 10, color: '#5C5C70', fontWeight: 600 }}>Car Wash</div>
+              </div>
+            </div>
           )}
           <button
             onClick={() => setSidebarExpanded(!sidebarExpanded)}
-            style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#5C5C70', fontSize: 16, padding: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: sidebarExpanded ? 'auto' : 'auto' }}
+            style={{ background: '#1A1A1F', border: '1px solid #28282F', cursor: 'pointer', color: '#5C5C70', fontSize: 12, padding: '4px 7px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 6, transition: 'all .15s' }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#28282F'; e.currentTarget.style.color = '#A0A0B0'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = '#1A1A1F'; e.currentTarget.style.color = '#5C5C70'; }}
           >
             {sidebarExpanded ? '◀' : '▶'}
           </button>
         </div>
 
-        {/* NAV SECTION: Main */}
-        <div style={{ padding: '12px 8px', flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
+        {/* NAV SECTION */}
+        <div style={{ padding: '10px 8px', flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
 
-          {/* Dashboard + sub-items */}
+          {/* Overview / Dashboard */}
           <button
             onClick={() => { setActivePage('dashboard'); setDashboardOpen(!dashboardOpen); }}
             style={{
@@ -1053,83 +1619,187 @@ export const CustomerPortal = () => {
               borderLeft: activePage === 'dashboard' ? '3px solid #F2A900' : '3px solid transparent',
             }}
           >
-            <span style={{ fontSize: 18 }}>⊞</span>
-            {sidebarExpanded && <><span style={{ flex: 1, textAlign: 'left' }}>Dashboard</span><span style={{ fontSize: 12, color: '#5C5C70' }}>{dashboardOpen ? '∧' : '∨'}</span></>}
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            {sidebarExpanded && <><span style={{ flex: 1, textAlign: 'left' }}>Overview</span><span style={{ fontSize: 11, color: activePage === 'dashboard' ? '#F2A90080' : '#3A3A45' }}>{dashboardOpen ? '∧' : '∨'}</span></>}
           </button>
 
           {sidebarExpanded && dashboardOpen && (
-            <div style={{ marginLeft: 28, display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <button onClick={() => setActivePage('reservasi')} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '7px 12px', borderRadius: 8, border: 'none', cursor: 'pointer', background: activePage === 'reservasi' ? 'rgba(242,169,0,.08)' : 'transparent', color: activePage === 'reservasi' ? '#F2A900' : '#A0A0B0', fontSize: 12, fontWeight: activePage === 'reservasi' ? 700 : 500, textAlign: 'left' }}>
-                <div style={{ width: 6, height: 6, borderRadius: '50%', background: activePage === 'reservasi' ? '#F2A900' : '#28282F' }} />
+            <div style={{ marginLeft: 28, display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <button onClick={() => setActivePage('reservasi')} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '7px 12px', borderRadius: 8, border: 'none', cursor: 'pointer', background: activePage === 'reservasi' ? 'rgba(242,169,0,.08)' : 'transparent', color: activePage === 'reservasi' ? '#F2A900' : '#5C5C70', fontSize: 12, fontWeight: activePage === 'reservasi' ? 700 : 400, textAlign: 'left' }}>
+                <div style={{ width: 5, height: 5, borderRadius: '50%', background: activePage === 'reservasi' ? '#F2A900' : '#28282F', flexShrink: 0 }} />
                 Reservasi Online
               </button>
-              <button onClick={() => setActivePage('antrean')} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '7px 12px', borderRadius: 8, border: 'none', cursor: 'pointer', background: activePage === 'antrean' ? 'rgba(242,169,0,.08)' : 'transparent', color: activePage === 'antrean' ? '#F2A900' : '#A0A0B0', fontSize: 12, fontWeight: activePage === 'antrean' ? 700 : 500, textAlign: 'left' }}>
-                <div style={{ width: 6, height: 6, borderRadius: '50%', background: activePage === 'antrean' ? '#F2A900' : '#28282F' }} />
+              <button onClick={() => setActivePage('antrean')} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '7px 12px', borderRadius: 8, border: 'none', cursor: 'pointer', background: activePage === 'antrean' ? 'rgba(242,169,0,.08)' : 'transparent', color: activePage === 'antrean' ? '#F2A900' : '#5C5C70', fontSize: 12, fontWeight: activePage === 'antrean' ? 700 : 400, textAlign: 'left' }}>
+                <div style={{ width: 5, height: 5, borderRadius: '50%', background: activePage === 'antrean' ? '#F2A900' : '#28282F', flexShrink: 0 }} />
                 Antrean Aktif
               </button>
             </div>
           )}
 
-          {navItem('kendaraan', 'Kendaraan Saya', '🚗')}
-          {navItem('store', 'Store & Merchandise', '🛒')}
+          {/* Activity */}
+          <button
+            onClick={() => setActivePage('reservasi')}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 12,
+              width: '100%', padding: sidebarExpanded ? '10px 14px' : '10px',
+              borderRadius: 10, border: 'none', cursor: 'pointer',
+              background: 'transparent', color: '#A0A0B0',
+              fontSize: 13, fontWeight: 500,
+              transition: 'all .15s', justifyContent: sidebarExpanded ? 'flex-start' : 'center',
+              borderLeft: '3px solid transparent',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,.04)'; e.currentTarget.style.color = '#fff'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#A0A0B0'; }}
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+            {sidebarExpanded && <span style={{ flex: 1, textAlign: 'left' }}>Activity</span>}
+          </button>
 
-          {/* Separator + Preferences */}
-          <div style={{ height: 1, background: '#28282F', margin: '12px 4px' }} />
-          {sidebarExpanded && <div style={{ fontSize: 11, fontWeight: 800, color: '#5C5C70', textTransform: 'uppercase', letterSpacing: '.06em', padding: '4px 14px' }}>Preferences</div>}
+          {/* My Vehicles */}
+          <button
+            onClick={() => setActivePage('kendaraan')}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 12,
+              width: '100%', padding: sidebarExpanded ? '10px 14px' : '10px',
+              borderRadius: 10, border: 'none', cursor: 'pointer',
+              background: activePage === 'kendaraan' ? 'rgba(242,169,0,.12)' : 'transparent',
+              color: activePage === 'kendaraan' ? '#F2A900' : '#A0A0B0',
+              fontSize: 13, fontWeight: activePage === 'kendaraan' ? 700 : 500,
+              transition: 'all .15s', justifyContent: sidebarExpanded ? 'flex-start' : 'center',
+              borderLeft: activePage === 'kendaraan' ? '3px solid #F2A900' : '3px solid transparent',
+            }}
+            onMouseEnter={e => { if (activePage !== 'kendaraan') { e.currentTarget.style.background = 'rgba(255,255,255,.04)'; e.currentTarget.style.color = '#fff'; } }}
+            onMouseLeave={e => { if (activePage !== 'kendaraan') { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#A0A0B0'; } }}
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+              <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/>
+              <rect x="9" y="11" width="14" height="10" rx="2"/>
+              <circle cx="12" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            </svg>
+            {sidebarExpanded && <span style={{ flex: 1, textAlign: 'left' }}>My Vehicles</span>}
+          </button>
 
-          {navItem('profil', 'Profil Saya', '👤')}
-          {navItem('membercard', 'Member Card', '🪪', { label: member.tier, bg: 'rgba(242,169,0,.15)', color: '#F2A900' })}
+          {/* Member Card (Formerly Subscription) */}
+          <button
+            onClick={() => setActivePage('membercard')}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 12,
+              width: '100%', padding: sidebarExpanded ? '10px 14px' : '10px',
+              borderRadius: 10, border: 'none', cursor: 'pointer',
+              background: activePage === 'membercard' ? 'rgba(242,169,0,.12)' : 'transparent',
+              color: activePage === 'membercard' ? '#F2A900' : '#A0A0B0',
+              fontSize: 13, fontWeight: activePage === 'membercard' ? 700 : 500,
+              transition: 'all .15s', justifyContent: sidebarExpanded ? 'flex-start' : 'center',
+              borderLeft: activePage === 'membercard' ? '3px solid #F2A900' : '3px solid transparent',
+            }}
+            onMouseEnter={e => { if (activePage !== 'membercard') { e.currentTarget.style.background = 'rgba(255,255,255,.04)'; e.currentTarget.style.color = '#fff'; } }}
+            onMouseLeave={e => { if (activePage !== 'membercard') { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#A0A0B0'; } }}
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+              <path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+              <line x1="1" y1="12" x2="23" y2="12"/>
+            </svg>
+            {sidebarExpanded && <><span style={{ flex: 1, textAlign: 'left' }}>Member Card</span>
+              <span style={{ background: 'rgba(242,169,0,.15)', color: '#F2A900', borderRadius: 8, fontSize: 9, fontWeight: 800, padding: '2px 6px' }}>{member.tier}</span>
+            </>}
+          </button>
+
+          {/* Separator */}
+          <div style={{ height: 1, background: '#1E1E24', margin: '10px 4px' }} />
+
+          {/* Store */}
+          <button
+            onClick={() => setActivePage('store')}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 12,
+              width: '100%', padding: sidebarExpanded ? '10px 14px' : '10px',
+              borderRadius: 10, border: 'none', cursor: 'pointer',
+              background: activePage === 'store' ? 'rgba(242,169,0,.12)' : 'transparent',
+              color: activePage === 'store' ? '#F2A900' : '#A0A0B0',
+              fontSize: 13, fontWeight: activePage === 'store' ? 700 : 500,
+              transition: 'all .15s', justifyContent: sidebarExpanded ? 'flex-start' : 'center',
+              borderLeft: activePage === 'store' ? '3px solid #F2A900' : '3px solid transparent',
+            }}
+            onMouseEnter={e => { if (activePage !== 'store') { e.currentTarget.style.background = 'rgba(255,255,255,.04)'; e.currentTarget.style.color = '#fff'; } }}
+            onMouseLeave={e => { if (activePage !== 'store') { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#A0A0B0'; } }}
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+            {sidebarExpanded && <span style={{ flex: 1, textAlign: 'left' }}>Store & Merch</span>}
+          </button>
         </div>
 
-        {/* SIDEBAR BOTTOM — Profile + Logout */}
-        <div style={{ borderTop: '1px solid #28282F', padding: '14px 12px' }}>
+        {/* SIDEBAR BOTTOM — Profile + Logout (Clicking profile user box navigates to Profil page) */}
+        <div style={{ borderTop: '1px solid #28282F', padding: '10px 8px' }}>
           {sidebarExpanded ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {/* User identity block */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <div style={{
-                  width: 38, height: 38, borderRadius: '50%', flexShrink: 0,
-                  background: tier.bg, border: `2px solid ${tier.accent}55`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 14, fontWeight: 900, color: tier.accent,
-                }}>
-                  {initials}
-                </div>
-                <div style={{ flex: 1, overflow: 'hidden' }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{member.name}</div>
-                  <div style={{ fontSize: 11, color: '#5C5C70' }}>{member.tier}</div>
-                </div>
-              </div>
-
-              {/* Logout */}
-              <button
-                onClick={() => logoutUser('pelanggan')}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 10,
-                  width: '100%', padding: '9px 12px', borderRadius: 10,
-                  border: '1px solid rgba(240,79,79,.2)', cursor: 'pointer',
-                  background: 'transparent', color: '#F04F4F', fontSize: 13, fontWeight: 700,
-                  transition: 'all .15s',
-                }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(240,79,79,.08)'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-              >
-                <span style={{ fontSize: 16 }}>⏻</span>
-                <span>Log Out</span>
-              </button>
-            </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center' }}>
-              <div style={{ width: 36, height: 36, borderRadius: '50%', background: tier.bg, border: `2px solid ${tier.accent}55`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 900, color: tier.accent, cursor: 'pointer' }} onClick={() => setActivePage('profil')}>
+            <div
+              onClick={() => setActivePage('profil')}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10,
+                padding: '8px 10px', borderRadius: 10, cursor: 'pointer',
+                background: activePage === 'profil' ? 'rgba(242,169,0,.12)' : 'transparent',
+                border: activePage === 'profil' ? '1px solid rgba(242,169,0,.3)' : '1px solid transparent',
+                transition: 'all .15s',
+              }}
+              onMouseEnter={e => { if (activePage !== 'profil') e.currentTarget.style.background = 'rgba(255,255,255,.04)'; }}
+              onMouseLeave={e => { if (activePage !== 'profil') e.currentTarget.style.background = 'transparent'; }}
+              title="Buka Profil Saya"
+            >
+              <div style={{
+                width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
+                background: tier.bg, border: `2px solid ${tier.accent}55`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 13, fontWeight: 900, color: tier.accent,
+              }}>
                 {initials}
               </div>
-              <button onClick={() => logoutUser('pelanggan')} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#F04F4F', fontSize: 18, padding: 4 }} title="Log Out">⏻</button>
+              <div style={{ flex: 1, overflow: 'hidden' }}>
+                <div style={{ fontSize: 12.5, fontWeight: 700, color: activePage === 'profil' ? '#F2A900' : '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{member.name}</div>
+                <div style={{ fontSize: 10, color: '#5C5C70' }}>{member.tier}</div>
+              </div>
+              <span style={{ fontSize: 13, color: '#5C5C70' }}>›</span>
+              <button
+                onClick={(e) => { e.stopPropagation(); logoutUser('pelanggan'); }}
+                title="Log Out"
+                style={{
+                  background: 'transparent', border: 'none', cursor: 'pointer',
+                  color: '#5C5C70', fontSize: 16, padding: 4, marginLeft: 2,
+                  display: 'flex', alignItems: 'center', borderRadius: 6, transition: 'color .15s',
+                }}
+                onMouseEnter={e => e.currentTarget.style.color = '#F04F4F'}
+                onMouseLeave={e => e.currentTarget.style.color = '#5C5C70'}
+              >⏻</button>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
+              <div
+                style={{
+                  width: 34, height: 34, borderRadius: '50%',
+                  background: tier.bg, border: `2px solid ${tier.accent}55`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 12, fontWeight: 900, color: tier.accent, cursor: 'pointer',
+                  boxShadow: activePage === 'profil' ? '0 0 10px #F2A900' : 'none',
+                }}
+                onClick={() => setActivePage('profil')}
+                title="Buka Profil Saya"
+              >
+                {initials}
+              </div>
+              <button onClick={(e) => { e.stopPropagation(); logoutUser('pelanggan'); }} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#5C5C70', fontSize: 16, padding: 4 }} title="Log Out">⏻</button>
             </div>
           )}
         </div>
       </aside>
 
-      {/* ── MAIN CONTENT ─────────────────────────────────────────────────── */}
+      {/* ── MAIN CONTENT ── */}
       <main style={{ flex: 1, padding: '32px 28px', overflowY: 'auto', minWidth: 0 }}>
         {renderPage()}
       </main>
